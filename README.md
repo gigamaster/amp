@@ -203,7 +203,7 @@ amp/
 
 ---
 
-## 🔒 Domain Management (`ssl.bat`)
+## 🔒 Domain Management - AMP-MANAGER.bat
 
 Run `config/AMP-MANAGER.bat` **Windows prompt as Administrator** to:
 
