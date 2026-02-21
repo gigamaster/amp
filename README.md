@@ -4,9 +4,23 @@
 
 ![Angie-AMP](https://placehold.co/840x400/272727/ffffff?text=ANGIE+MariaDB+PHP)
 
+
+
 **Lightweight Docker-based local dev environment** with Angie (NGINX fork), MariaDB, and PHP  
 featuring **automatic HTTPS with green lock** for every `.local` domain.  
 
+## Angie AMP Manager
+**The System Architect’s Local Stack.**
+
+---
+
+   > [!TIP]
+   > This stack is intentionally kept small and readable.  
+   > You can open every .bat file, every .conf file, every docker-compose.yml.  
+   > Change them. Break them. Fix them.  
+   > That is how you really learn.
+
+---
 
 Fully portable to run from any drive (C:, D:, USB, network shares).
 
@@ -16,6 +30,97 @@ Fully portable to run from any drive (C:, D:, USB, network shares).
 > ✅ **Production-like** — mirrors real-world LEMP stack architecture
 
 ---
+
+## The Workflow
+
+```mermaid
+---
+config:
+  theme: 'base'
+  themeVariables:
+    primaryColor: '#1b417e'
+    primaryTextColor: '#fff'
+    primaryBorderColor: '#2457a8'
+    lineColor: '#F8B229'
+    secondaryColor: '#1e3363'
+    secondaryBorderColor: '#ff9800'
+    tertiaryColor: '#212527'
+    tertiaryBorderColor: '#272727'
+---
+graph TD
+    A[Windows Host<br><font color=white>D:\amp\...</font>] -->|Editable Files| B[www/ - sites folders]
+    A -->|Editable| C[config/angie-sites/ - *.conf]
+    A -->|mkcert.exe| D[certs/ - .pem + -key.pem]
+
+    subgraph Docker Compose Stack
+        E[angie container<br>Ports 80/443 exposed]
+        F[php-fpm container]
+        G[db mariadb container]
+    end
+
+    B -->|bind mount rw| E
+    B -->|bind mount rw| F
+    C -->|bind mount ro| E
+    D -->|bind mount ro| E
+
+    Browser[Browser<br>https://project.local] -->|DNS: hosts| E
+    E -->|fastcgi_pass| F
+    F -->|MySQL| G
+
+    style A fill:#da1e1e,stroke:#ff5742
+    style Browser fill:#0069ae,stroke:#fff
+    
+```
+
+## The Architecture
+
+### Directory Tree
+
+```text
+Windows Host (D:\amp\...)                                                                                
+│                                                                                                    
+├─ Host Folders (your code & configs — fully editable in VS Code / Notepad++)                       
+│   ├── www/                     ← Web root (your sites: angie.local/, myproject.local/, ...)      
+│   ├── config/                                                                                     
+│   │   ├── AMP-MANAGER.bat      ← Generates CA, SSL, Configs, and scaffolding
+│   │   ├── angie-sites/         ← Angie vhost configs (*.local.conf)                               
+│   │   ├── certs/               ← SSL certs/keys (from mkcert)
+│   │   ├── db-init/             # SQL bootstrap (root permissions/grants)
+│   │   ├── dnsmasq/             # map any *.local to the Angie container                                 
+│   │   └── php.ini              ← Custom PHP settings                                              
+│   └── logs/                    ← PHP & app logs                                                  
+│                                                                                                    
+│   (You edit files here directly — no container copy/sync needed)                                 
+│                                                                                                    
+├─ Docker Desktop (runs Linux VM underneath)                                                        
+│   │                                                                                                
+│   └─ Docker Compose (amp stack)                                                                   
+│       ├── Network (amp-network) ───────────────┐                                                  
+│       │                                        │                                                  
+│       ├── Volumes / Bind Mounts (host ↔ container mapping)                                       
+│       │   ├── D:\amp\www                →  /www (rw)             # Sites served from host           
+│       │   ├── D:\amp\config\angie-sites → /etc/angie/http.d (ro) # Angie reads your vhosts      
+│       │   ├── D:\amp\config\certs       → /etc/angie/certs (ro)  # SSL certs visible inside Angie    
+│       │   └── D:\amp\logs               → /var/log/php (rw)      # (optional) Logs written back to host         
+│       │                                                                                           
+│       ├── Services (containers)                                                                   
+│       │   ├── angie (docker.angie.software/angie:latest)                                          
+│       │   │   ├─ Ports: 80:80, 443:443    Browser → localhost → Angie                             
+│       │   │   └─ Reads configs from /etc/angie/http.d/*.local.conf                               
+│       │   │                                                                                       
+│       │   ├── php (webdevops/php:8.3/8.4)                                                             
+│       │   │   ├─ FPM listens on 9000/tcp (internal)                                               
+│       │   │   └─ Reads code from /www (your host files — live reload)                            
+│       │   │                                                                                       
+│       │   └── db (mariadb:10.11)                                                                  
+│       │       └─ Data persisted (named volume or bind mount)                                      
+│       │                                                                                           
+│       └── Workflow arrows (simplified)                                                            
+│                                                                                                    
+└─ Browser (https://angie.local / myproject.local)                                                  
+    ↓ (DNS: hosts file or wildcard → 127.0.0.1)                                             
+    → Windows host ports 80/443 → Docker published ports → Angie container
+```
 
 ## 🔧 Features
 
@@ -42,17 +147,19 @@ Option A: Git clone
 ```cmd
 git clone https://github.com/gigamaster/amp.git
 ```
+
 Option B: Download ZIP → Extract to ANY location (C:\amp, D:\dev, USB drive, etc.)
 
 ### 3. First Run (One-Time Setup)
+
 1. Navigate to `config` folder
-2. **Right-click `ssl.bat` → Run as administrator**
-3. Click **"Yes"** when Windows Security dialog appears (installs mkcert CA)
+2. **Right-click `AMP-MANAGER.bat` → UAC/elevation to run as administrator**
+3. Click **"Yes"** when Windows Security dialog appears, mkcert install your Certificate Authority (CA)
 4. Follow prompts to create your first domain (e.g., `angie` → becomes `https://angie.local`)
 
 > [!TIP]
-> Keep `ssl.bat` handy on your desktop  
-> right-click → Run as admin whenever you start a new project.  
+> Keep `ANP-MANAGER.bat` handy on your desktop  
+> Run as admin whenever you start a new project.  
 > Takes 10 seconds to get a green-lock HTTPS site ready for development.
 
 ### 4. Start the Stack
@@ -71,25 +178,17 @@ docker compose up -d
 
 ---
 
-## 📂 Project Structure
+## 📂 Project Structure - Workflow
 
 ```
 amp/
 ├── config/
-│   ├── ssl.bat          ← Run as Admin to manage domains/certs
-│   ├── mkcert.exe       ← Certificate authority tool
-│   ├── certs/           ← Auto-generated per-domain certificates
-│   └── angie-sites/     ← Auto-generated Angie configs per domain
+│   └── AMP-MANAGER.bat  ← First run as Admin to manage domains/certs
 ├── www/
-│   └── gethome.local/   ← Your project files (index.php/html here)
+│   └── project.local/   ← Your project files (index.php/html here)
 ├── docker-compose.yml   ← Stack definition (Angie + MariaDB + PHP)
 └── README.md
 ```
-
-## 🚧 TODO
-Desktop portable app
-
-**Portability**: Entire stack works from **any path** — `C:\amp`, `D:\projects\angie-amp`, `E:\USB\dev`, etc. No configuration needed.
 
 ---
 
@@ -107,7 +206,7 @@ Desktop portable app
 
 ## 🔒 Domain Management (`ssl.bat`)
 
-Run `config/ssl.bat` **as Administrator** to:
+Run `config/AMP-MANAGER.bat` **Windows prompt as Administrator** to:
 
 1. **Add domain**: Enter `project` → creates:
    - Certificate: `config/certs/project.local.pem`
@@ -200,6 +299,13 @@ Firefox uses its own certificate store:
 - Officially reserved for local network use ([RFC 6762](https://datatracker.ietf.org/doc/rfc6762/))
 - Never resolves on public internet → safe for development
 - Works with mDNS/Bonjour on macOS/Linux (though Windows uses hosts file)
+
+---
+
+## 🚧 TODO
+Desktop portable app
+
+**Portability**: Entire stack works from **any path** — `C:\amp`, `D:\projects\angie-amp`, `\USB\amp`, etc. No configuration needed.
 
 ---
 
