@@ -3,7 +3,7 @@
 ![Angie-AMP](amp-server-batteries-included.png)
 
 # AMP — Angie, MariaDB and PHP
-**Docker-based Dev Stack with SSL for Windows""
+**Docker-based Dev Stack with SSL for Windows**
 
 **Lightweight Docker-based local dev environment** with Angie (NGINX fork), MariaDB, and PHP  
 featuring **automatic HTTPS with green lock** for every `.local` domain.  
