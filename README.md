@@ -2,7 +2,7 @@
 
 ## Docker-based Dev Stack for Windows
 
-![Angie-AMP](https://placehold.co/840x400/272727/ffffff?text=ANGIE+MariaDB+PHP)
+![Angie-AMP](amp-server-batteries-included.png)
 
 
 
