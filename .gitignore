@@ -1,0 +1,18 @@
+# Temporary files, backup, cache
+backup/*
+back/*
+logs
+*.back
+*.backup
+*.log
+*.temp
+*.cache
+# Thumbnails
+._*
+# Folder config file
+[Dd]esktop.ini
+## Windows 
+# ignore thumbnail cache files
+Thumbs.db
+# Windows shortcuts
+*.lnk

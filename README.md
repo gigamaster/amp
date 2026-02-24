@@ -1,6 +1,6 @@
 
 
-![Angie-AMP](amp-angie-mariadb-php-ssl.png)
+![Angie-AMP](favicon/amp-angie-mariadb-php-ssl.png)
 
 # AMP — Angie, MariaDB and PHP
 **Docker-based Dev Stack with SSL for Windows**
@@ -76,48 +76,47 @@ graph TD
 ### Directory Tree
 
 ```text
-Windows Host (D:\amp\...)                                                                                
-│                                                                                                    
-├─ Host Folders (your code & configs — fully editable in VS Code / Notepad++)                       
-│   ├── www/                     ← Web root (your sites: angie.local/, myproject.local/, ...)      
-│   ├── config/                                                                                     
+Windows Host (D:\amp\...)
+│                        
+├─ Host Folders (code & configs — fully editable in IDE/Notepad)
+│   ├── www/                     ← Web root (your sites: angie.local/, project.local/, ...)
+│   ├── config/
 │   │   ├── AMP-MANAGER.bat      ← Generates CA, SSL, Configs, and scaffolding
-│   │   ├── angie-sites/         ← Angie vhost configs (*.local.conf)                               
+│   │   ├── angie-sites/         ← Angie vhost configs (*.local.conf) 
 │   │   ├── certs/               ← SSL certs/keys (from mkcert)
 │   │   ├── db-init/             # SQL bootstrap (root permissions/grants)
-│   │   ├── dnsmasq/             # map any *.local to the Angie container                                 
-│   │   └── php.ini              ← Custom PHP settings                                              
-│   └── logs/                    ← PHP & app logs                                                  
-│                                                                                                    
-│   (You edit files here directly — no container copy/sync needed)                                 
-│                                                                                                    
-├─ Docker Desktop (runs Linux VM underneath)                                                        
-│   │                                                                                                
-│   └─ Docker Compose (amp stack)                                                                   
-│       ├── Network (amp-network) ───────────────┐                                                  
-│       │                                        │                                                  
-│       ├── Volumes / Bind Mounts (host ↔ container mapping)                                       
-│       │   ├── D:\amp\www                →  /www (rw)             # Sites served from host           
-│       │   ├── D:\amp\config\angie-sites → /etc/angie/http.d (ro) # Angie reads your vhosts      
-│       │   ├── D:\amp\config\certs       → /etc/angie/certs (ro)  # SSL certs visible inside Angie    
-│       │   └── D:\amp\logs               → /var/log/php (rw)      # (optional) Logs written back to host         
-│       │                                                                                           
-│       ├── Services (containers)                                                                   
-│       │   ├── angie (docker.angie.software/angie:latest)                                          
-│       │   │   ├─ Ports: 80:80, 443:443    Browser → localhost → Angie                             
-│       │   │   └─ Reads configs from /etc/angie/http.d/*.local.conf                               
-│       │   │                                                                                       
-│       │   ├── php (webdevops/php:8.3/8.4)                                                             
-│       │   │   ├─ FPM listens on 9000/tcp (internal)                                               
-│       │   │   └─ Reads code from /www (your host files — live reload)                            
-│       │   │                                                                                       
-│       │   └── db (mariadb:10.11)                                                                  
-│       │       └─ Data persisted (named volume or bind mount)                                      
-│       │                                                                                           
-│       └── Workflow arrows (simplified)                                                            
-│                                                                                                    
-└─ Browser (https://angie.local / myproject.local)                                                  
-    ↓ (DNS: hosts file or wildcard → 127.0.0.1)                                             
+│   │   └── php.ini              ← Custom PHP settings
+│   └── logs/                    ← PHP & app logs
+│
+│   (You edit files here directly — no container copy/sync needed)
+│                                   
+├─ Docker Desktop (runs Linux VM underneath)
+│   │                                                         
+│   └─ Docker Compose (amp stack)
+│       ├── Network (amp-network) ───────────────┐
+│       │                                        │
+│       ├── Volumes / Bind Mounts (host ↔ container mapping)
+│       │   ├── D:\amp\www                →  /www (rw)             # Sites served from host
+│       │   ├── D:\amp\config\angie-sites → /etc/angie/http.d (ro) # Angie reads your vhosts
+│       │   ├── D:\amp\config\certs       → /etc/angie/certs (ro)  # SSL certs for Angie
+│       │   └── D:\amp\logs               → /var/log/php (rw)      # (optional) Logs to host
+│       │
+│       ├── Services (containers)
+│       │   ├── angie (docker.angie.software/angie:latest)
+│       │   │   ├─ Ports: 80:80, 443:443    Browser → localhost → Angie
+│       │   │   └─ Reads configs from /etc/angie/http.d/*.local.conf
+│       │   │                                
+│       │   ├── php (webdevops/php:8.3/8.4)
+│       │   │   ├─ FPM listens on 9000/tcp (internal)
+│       │   │   └─ Reads code from /www (your host files — live reload)
+│       │   │                             
+│       │   └── db (mariadb:10.11)
+│       │       └─ Data persisted (named volume or bind mount)
+│       │
+│       └── Workflow arrows (simplified)
+│
+└─ Browser (https://angie.local / project.local)
+    ↓ (DNS: hosts file or wildcard → 127.0.0.1)
     → Windows host ports 80/443 → Docker published ports → Angie container
 ```
 
