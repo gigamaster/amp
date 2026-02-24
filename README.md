@@ -1,6 +1,6 @@
 
 
-![Angie-AMP](amp-server-batteries-included.png)
+![Angie-AMP](amp-angie-mariadb-php-ssl.png)
 
 # AMP — Angie, MariaDB and PHP
 **Docker-based Dev Stack with SSL for Windows**
