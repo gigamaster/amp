@@ -33,13 +33,14 @@
 </div>
 
 
-
-> [!TIP]
+```cmd
+📢 Overcome the architectural enclosure, it's just another form of control.
+REM
 > This stack is intentionally kept small and readable.  
 > You can open every .bat file, every .conf file, every docker-compose.yml.  
-> Change them. Break them. Fix them.  
+> Change them > Break them > Fix them.  
 > That is how you really learn.
-
+```
 
 ## Overall Workflow
 ### How AMP-Manager enables local development
