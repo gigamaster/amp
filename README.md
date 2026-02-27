@@ -1,41 +1,35 @@
 
-<div align="center">
-  
+<p align="center">
   <picture align="center">
-  <img src="favicon/amp-angie-mariadb-php-ssl.png" alt="AMP Docker Angie, MariaDB, PHP, SSL" style="width:840px; height:auto">
-  </picture
-
-  <picture align="center">
+    <img src="favicon/amp-angie-mariadb-php-ssl.png" alt="AMP Docker Angie, MariaDB, PHP, SSL" style="width:840px; height:auto">
+  </picture>
+</p>
+<p align="center">
+<picture>
   <img src="favicon/4x4.png" alt="Overview" style="width:800px; height:32px">
-  </picture
-
-  <picture align="center">
-  <img src="favicon/amp-manager-screenshot.png" alt="Amp Manager screenshot" style="width:640px; height:auto">
-  </picture
-
-</div>
+</picture>
+</p>
+<p align="center">
+    <img src="favicon/amp-manager-screenshot.png" alt="Amp Manager" style="width:640px; height:auto">
+</p>
 
 <div style="text-align:center;">
-  <h2>AMP Manager — Angie, MariaDB and PHP</h2>
-  <p><b>Docker-based Dev Stack with Trusted SSL for Windows</b></p>
-</div>
-
-
-<picture align="center">
+  <h3 align="center">AMP Manager — Angie, MariaDB and PHP</h3>
+  <p align="center"><b>Docker-based Dev Stack with Trusted SSL for Windows</b></p>
+  <picture align="center">
   <img src="favicon/4x4.png" alt="Overview" style="width:800px; height:32px">
 </picture
+</div>
 
 <div style="text-align:center;">
-  <p>From Code Consumers to Stack Architects<br> 
+  <p align="center">From Code Consumers to Stack Architects<br> 
   One <code>.local</code> at a Time.</p>
-  <p>Because Knowing <b>How</b> the Stack Works<br>
+  <p align="center">Because Knowing <b>How</b> the Stack Works<br>
   Beats Just Making It Work!
   </p>
-
   <picture align="center">
   <img src="favicon/4x4.png" alt="Overview" style="width:800px; height:32px">
-  </picture
-
+  </picture>
 </div>
 
 
