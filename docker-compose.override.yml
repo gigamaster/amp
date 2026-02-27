@@ -1,0 +1,8 @@
+services:
+  php:
+    extra_hosts:
+      - "gethome.local:host-gateway"
+      - "angie.local:host-gateway"
+      - "proxy-notes.local:host-gateway"
+      - "homelab.local:host-gateway"
+      - "luxli.local:host-gateway"
