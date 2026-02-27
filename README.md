@@ -90,8 +90,8 @@ graph TD
     
     %% Styling
     style Manager fill:#da1e1e,stroke:#ff5742,stroke-width:2px
-    style Angie_Container fill:#1b417e80,stroke:#37b2d4
-    style PHP_Container fill:#3161b5,stroke:#4c84e6
+    style Angie_Container fill:#1b417e80,stroke:#0a6fc2
+    style PHP_Container fill:#1b417e80,stroke:#0a6fc2
 ```
 
 Fully portable to run from any drive (C:, D:, USB, network shares).
