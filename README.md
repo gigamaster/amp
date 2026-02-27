@@ -7,32 +7,24 @@
   <img src="favicon/images/4x4.png" alt="Overview" style="width:800px; height:32px">
 </picture
 
-
-<table>
-  <tr>
-     <td>
-     <h2>AMP — Angie, MariaDB and PHP</h2>
-     <p><b>Docker-based Dev Stack with SSL for Windows</b></p>
-     <p><b>Lightweight Docker-based local dev environment</b>
-     with Angie (NGINX fork), MariaDB, and PHP  
-     featuring automatic HTTPS with green lock 
-     for every <code>>.local</code> domain.</p>
-     </td>
-     <td align="center">
-     <picture>
-     <img src="favicon/amp-manager-screenshot.png" alt="Amp Manager" style="width:640px; height:auto">
-     </picture
-     </td>
-   </tr>
-</table>
-
-
 <picture>
-  <img src="./images/4x4.png" alt="Overview" style="width:800px; height:32px">
+  <img src="favicon/amp-manager-screenshot.png" alt="Amp Manager" style="width:640px; height:auto">
 </picture
 
-## AMP Manager
-**Local Dev Stack with Trusted SSL & Editable Magic**
+
+<h2 align="center">AMP Manager — Angie, MariaDB and PHP</h2>
+<pa lign="center"><b>Docker-based Dev Stack with SSL for Windows</b></p>
+<p><b>Lightweight Docker-based local dev environment</b>
+with Angie (NGINX fork), MariaDB, and PHP  
+featuring automatic HTTPS with green lock 
+for every <code>>.local</code> domain.</p>
+
+<picture>
+  <img src="favicon//images/4x4.png" alt="Overview" style="width:800px; height:32px">
+</picture
+
+
+### Local Dev Stack with Trusted SSL
 
 **From Code Consumers to Stack Architects**  
 One `.local` at a Time
