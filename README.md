@@ -8,8 +8,16 @@
 **Lightweight Docker-based local dev environment** with Angie (NGINX fork), MariaDB, and PHP  
 featuring **automatic HTTPS with green lock** for every `.local` domain.  
 
-## Angie AMP Manager
-**The System Architect’s Local Stack.**
+
+
+## AMP Manager
+**Local Dev Stack with Trusted SSL & Editable Magic**
+
+**From Code Consumers to Stack Architects**  
+One `.local` at a Time
+
+Because Knowing *How* the Stack Works  
+Beats Just Making It Work!
 
 ---
 
@@ -21,6 +29,71 @@ featuring **automatic HTTPS with green lock** for every `.local` domain.
 
 ---
 
+## Overall Workflow
+### How AMP-Manager enables local development
+This diagram shows the high-level workflow a student follows when using AMP-Manager:
+
+- Launch amp-manager.bat
+- Tool checks the environment (required files, updates hosts file, starts containers, generates trusted local SSL certificate via mkcert)
+- Developer opens browser, requests project.local
+- OS hosts file redirects .local domain to Docker network (Angie proxy → PHP + MariaDB)
+
+It illustrates the end-to-end user journey from starting the tool to reaching a working HTTPS site in the browser.
+
+
+```mermaid
+---
+config:
+  theme: 'base'
+  themeVariables:
+    primaryColor: '#1b417e'
+    primaryTextColor: '#fff'
+    primaryBorderColor: '#2457a8'
+    lineColor: '#F8B229'
+    secondaryColor: '#1e3363'
+    secondaryBorderColor: '#ff9800'
+    tertiaryColor: '#212527'
+    tertiaryBorderColor: '#272727'
+---
+graph TD
+    subgraph Windows_Host [Self-Host]
+        Browser[Web Browser]
+        HostsFile[Windows Hosts File]
+        IDE[Native IDE / VS Code]
+        Manager[AMP-Manager.bat]
+    end
+
+    subgraph Docker_Engine [Docker Engine]
+        subgraph Angie_Container [Angie / Reverse Proxy]
+            Vhost[Project.local.conf]
+            SSL[SSL Certificates .pem]
+        end
+        subgraph PHP_Container [PHP-FPM 8.x]
+            Code[PHP Execution Engine]
+        end
+        subgraph DB_Container [MariaDB]
+            Data[(Project Data)]
+        end
+    end
+
+    %% Interactions
+    Manager --"1. Scaffolds"--> IDE
+    Manager --"2. Updates"--> HostsFile
+    Manager --"3. Generates"--> Vhost
+    
+    Browser --"Request Domain.local"--> HostsFile
+    HostsFile --"Resolve 127.0.0.1"--> Angie_Container
+    
+    Vhost --"FastCGI Pass"--> PHP_Container
+    IDE --"Bind Mount /www/"--> PHP_Container
+    PHP_Container --"Internal DNS"--> DB_Container
+    
+    %% Styling
+    style Manager fill:#da1e1e,stroke:#ff5742,stroke-width:2px
+    style Angie_Container fill:#1b417e80,stroke:#37b2d4
+    style PHP_Container fill:#3161b5,stroke:#4c84e6
+```
+
 Fully portable to run from any drive (C:, D:, USB, network shares).
 
 > ✅ **No hardcoded paths** — runs from wherever you unzip it  
@@ -28,9 +101,22 @@ Fully portable to run from any drive (C:, D:, USB, network shares).
 > ✅ **Beginner-friendly** — one-click domain setup with green lock in browsers  
 > ✅ **Production-like** — mirrors real-world LEMP stack architecture
 
+> A bind mount is a Linux mechanism that mounts an existing file or directory tree from the host system into a new location, often used to map local host directories into Docker containers for direct, high-> performance file sharing and synchronization. It provides real-time, two-way updates between the host and the target, commonly used for development or sharing configuration files.
+
 ---
 
-## The Workflow
+## The Infrastructure Process Flow
+
+**Host and container relationship, bind mounts, local domain and certificate creation.**
+
+This diagram focuses on the technical process flow and file-system bridging that AMP-Manager sets up behind the scenes:
+
+- Host → bind mounts (editable project files + config visible on both sides)
+- Hosts file modification (myproject.local → container IP)
+- mkcert certificate generation + trust (.pem files mounted into Angie)
+- Angie (reverse proxy) handles HTTPS termination for all .local domains
+
+It emphasizes how the local domain becomes trusted and resolvable, and how source code/config remains editable directly on the host machine.
 
 ```mermaid
 ---
@@ -71,9 +157,9 @@ graph TD
     
 ```
 
-## The Architecture
+## The Directory Tree
 
-### Directory Tree
+Train the Architect Mindset – One Trusted .local Domain at a Time
 
 ```text
 Windows Host (D:\amp\...)
