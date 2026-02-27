@@ -1,46 +1,51 @@
 
+<div align="center">
+  
+  <picture align="center">
+  <img src="favicon/amp-angie-mariadb-php-ssl.png" alt="AMP Docker Angie, MariaDB, PHP, SSL" style="width:840px; height:auto">
+  </picture
 
-![Angie-AMP](favicon/amp-angie-mariadb-php-ssl.png)
+  <picture align="center">
+  <img src="favicon/4x4.png" alt="Overview" style="width:800px; height:32px">
+  </picture
+
+  <picture align="center">
+  <img src="favicon/amp-manager-screenshot.png" alt="Amp Manager screenshot" style="width:640px; height:auto">
+  </picture
+
+</div>
+
+<div style="text-align:center;">
+  <h2>AMP Manager — Angie, MariaDB and PHP</h2>
+  <p><b>Docker-based Dev Stack with Trusted SSL for Windows</b></p>
+</div>
 
 
-<picture>
-  <img src="favicon/images/4x4.png" alt="Overview" style="width:800px; height:32px">
+<picture align="center">
+  <img src="favicon/4x4.png" alt="Overview" style="width:800px; height:32px">
 </picture
 
-<picture>
-  <img src="favicon/amp-manager-screenshot.png" alt="Amp Manager" style="width:640px; height:auto">
-</picture
+<div style="text-align:center;">
+  <p>From Code Consumers to Stack Architects<br> 
+  One <code>.local</code> at a Time.</p>
+  <p>Because Knowing <b>How</b> the Stack Works<br>
+  Beats Just Making It Work!
+  </p>
+
+  <picture align="center">
+  <img src="favicon/4x4.png" alt="Overview" style="width:800px; height:32px">
+  </picture
+
+</div>
 
 
-<h2 align="center">AMP Manager — Angie, MariaDB and PHP</h2>
-<pa lign="center"><b>Docker-based Dev Stack with SSL for Windows</b></p>
-<p><b>Lightweight Docker-based local dev environment</b>
-with Angie (NGINX fork), MariaDB, and PHP  
-featuring automatic HTTPS with green lock 
-for every <code>>.local</code> domain.</p>
 
-<picture>
-  <img src="favicon//images/4x4.png" alt="Overview" style="width:800px; height:32px">
-</picture
+> [!TIP]
+> This stack is intentionally kept small and readable.  
+> You can open every .bat file, every .conf file, every docker-compose.yml.  
+> Change them. Break them. Fix them.  
+> That is how you really learn.
 
-
-### Local Dev Stack with Trusted SSL
-
-**From Code Consumers to Stack Architects**  
-One `.local` at a Time
-
-Because Knowing *How* the Stack Works  
-Beats Just Making It Work!
-
----
-
-   > [!TIP]
-   > This stack is intentionally kept small and readable.  
-   > You can open every .bat file, every .conf file, every docker-compose.yml.  
-   > Change them. Break them. Fix them.  
-   > That is how you really learn.
-
----
 
 ## Overall Workflow
 ### How AMP-Manager enables local development
