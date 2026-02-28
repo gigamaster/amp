@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AMP About • angie.local</title>
+    <meta name="description" content="AMP-MANAGER Dashboard">
+    <link rel="icon" href="./favicon/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="./assets/style.css"/>
+</head>
+<body>
+
+<header>
+    <div class="logo">AMP • angie.local</div>
+    <div class="header-buttons">
+        <a href="index.html">Dashboard</a>
+        <a href="help.html">Help</a>
+        <a href="about.html">About</a>
+    </div>
+</header>
+
+<div class="main">
+    <aside>
+        <ul>
+            <li><a href="#amp-manager" class="active">AMP Manager</a></li>
+            <li><a href="#angie-server">Angie Server</a></li>
+            <li><a href="#mariadb">MariaDB</a></li>
+            <li><a href="#php-version">PHP Version</a></li>
+            <li><a href="#docker">Docker</a></li>
+            <li><a href="#utils-tools">Utils/Tools</a></li>
+            <li><a href="#github-repo">Github Repo</a></li>
+        </ul>
+    </aside>
+
+    <div class="content">
+
+        <section id="amp-manager" class="card">
+            <h2>AMP Manager</h2>
+            <p>The AMP Manager (<code>amp-manager.bat</code>) is the central tool for creating, configuring and removing local sites on your machine.</p>
+            <p>It handles:</p>
+            <ul>
+                <li>Project folder creation in <code>D:\amp\www\</code></li>
+                <li>Angie virtual host configuration</li>
+                <li>Local SSL certificate generation (via mkcert)</li>
+                <li>Windows hosts file updates (with UAC elevation)</li>
+                <li>Basic health checks and cleanup</li>
+            </ul>
+            <p>Everything is done with readable batch script — you can open, modify and understand every step.</p>
+        </section>
+
+        <section id="angie-server" class="card">
+            <h2>Angie Server</h2>
+            <p>Angie is a high-performance, modern fork of Nginx with enhanced configuration options, better module support and active development.</p>
+            <p>In AMP it serves as the web server and reverse proxy:</p>
+            <ul>
+                <li>Handles all HTTP/HTTPS traffic</li>
+                <li>Passes PHP requests to PHP-FPM</li>
+                <li>Loads virtual hosts from <code>/etc/angie/http.d/*.conf</code></li>
+            </ul>
+            <p>More technical details and customization options will be added here later.</p>
+        </section>
+
+        <section id="mariadb" class="card">
+            <h2>MariaDB</h2>
+            <p>MariaDB is the relational database used in AMP — a drop-in replacement for MySQL with better performance and open-source focus.</p>
+            <p>Key facts:</p>
+            <ul>
+                <li>Container name: <code>db</code></li>
+                <li>Exposed port: 3306 (accessible from host)</li>
+                <li>Default root password: set in docker-compose or .env</li>
+                <li>Default application database: <code>ampdb</code></li>
+            </ul>
+            <p>Use phpMyAdmin or any MySQL client to manage databases.</p>
+        </section>
+
+        <section id="php-version" class="card">
+            <h2>PHP Version</h2>
+            <p>AMP uses PHP 8.3 (webdevops/php:8.3 image) with FPM (FastCGI Process Manager)</p>
+            <p>for efficient request handling. Enabled by default:</p>
+            <ul>
+                <li>pdo_mysql, gd, curl, mbstring, openssl, json, xml, zip, intl, fileinfo</li>
+                <li>Customization (memory limit, upload size, etc.) is done via <code>D:\amp\config\php.ini</code>.</li>
+            </ul>
+        </section>
+
+        <section id="docker" class="card">
+            <h2>Docker</h2>
+            <p>Docker Compose orchestrates the entire AMP stack:</p>
+            <ul>
+                <li>angie: web server</li>
+                <li>php: PHP-FPM processor</li>
+                <li>db: MariaDB database</li>
+            </ul>
+            <br/>
+            <p>All important files are bind-mounted from your host.<br/> 
+            You edit them directly on Windows, changes are instant.
+            </p>
+            <br/>
+            <p>Basic commands:</p>
+            <ul>
+                <li>Status: <code>docker compose ps</code></li>
+                <li>Logs: <code>docker compose logs -f</code></li>
+                <li>Restart: <code>docker compose down && docker compose up -d</code></li>
+            </ul>
+        </section>
+
+        <section id="utils-tools" class="card">
+            <h2>Utils/Tools</h2>
+            <p>AMP includes a small set of lightweight, open tools:</p>
+            <ul>
+                <li>mkcert — local SSL certificates (trusted by browsers after install)</li>
+                <li>amp-manager.bat — site creation/removal script</li>
+                <li>Optional: Acrylic DNS Proxy (wildcard *.local resolution)</li>
+            </ul>
+            <br/>
+            <h2>Admin DB</h2>
+            <p>Admin DB is a lightweight database management tool built into AMP.</p>
+            <p>It provides a simple interface to manage MariaDB databases and tables.</p>
+            <p><a href="adminneo/index.php">Admin DB →</a></p>
+            <br/>
+            <p>No heavy frameworks, no telemetry, no vendor lock-in.</p>
+        </section>
+
+        <section id="github-repo" class="card">
+            <h2>Github Repo</h2>
+            <p>The full AMP project is open source and hosted on GitHub:</p>
+            <p><a href="https://github.com/gigamaster/amp" style="color: var(--primary); text-decoration: underline;">github.com/gigamaster/amp</a></p>
+            <br/>
+            <p>You can:</p>
+            <ul>
+                <li>Fork and modify the stack</li>
+                <li>Report issues or suggest improvements</li>
+                <li>Contribute new features or documentation</li>
+            </ul>
+            <br/>
+            <p>Everything is readable and changeable. No proprietary cages. No hidden fees.</p>
+        </section>
+
+    </div>
+</div>
+
+<footer>
+    AMP – Angie • MariaDB • PHP • CA-SSL<br>
+    <small>© <?= date('Y') ?> gigamaster • <a href="https://github.com/gigamaster/amp" target="_blank">GitHub - AMP</a></small>
+</footer>
+
+</body>
+</html>

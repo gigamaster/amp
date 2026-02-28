@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AMP-MANAGER Dashboard • angie.local</title>
+    <meta name="description" content="AMP-MANAGER Dashboard">
+    <link rel="icon" href="./favicon/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="./assets/style.css"/>
+    <!-- <script src="/assets/scripts.js"></script> -->
+</head>
+<body>
+<div class="hero">
+    <div>
+        <a href="#welcome-app" class="scroll-arrow" title="Discover more">
+        <div class="hero-logo">AMP</div>
+        <p style="font-size:1.75rem; opacity:0.9; margin-top:1rem;">
+            Angie • MariaDB • PHP • SSL
+        </p>
+        <p style="font-size:1.25rem; opacity:0.7; margin-top:0.5rem;">
+            Local Development Stack
+        </p>
+    </div>
+    <div class="hero-arrow">
+        ↓
+    </div>
+    </a>
+</div>
+
+<header>
+    <div class="logo">AMP • angie.local</div>
+    <div class="header-buttons">
+        <a href="index.html">Dashboard</a>
+        <a href="help.html">Help</a>
+        <a href="about.html">About</a>
+    </div>
+</header>
+
+<div class="main">
+
+    <aside>
+        <ul>
+            <li><a href="#domains">Domains (1)</a></li>
+            <li><a href="#core">Core Components</a></li>
+            <li><a href="#db">Database Connection</a></li>
+            <li><a href="#extensions">PHP Extensions</a></li>
+            <li><a href="#limits">PHP Limits</a></li>
+            <li><a href="#credential">Credentials</a></li>
+            <li><a href="#custom">Customization</a></li>
+        </ul>
+    </aside>
+
+    <div class="content">
+
+        <section id="welcome-app" class="card">
+            <h2>Welcome to AMP</h2>
+            <p>Your local development stack is ready.</p>
+            <br/>
+            <P><a href="student.php" target="_blank">Real-time server status</a></P>
+        </section>
+
+        <section id="domains" class="card">
+            <h2>Domains: 1 total</h2>
+            <div class="domains-list">
+                <div class="domain-tag"><a href="#" target="_blank">angie.local</a></div>
+            </div>
+        </section>
+
+        <section id="core" class="card">
+            <h2>Core Components</h2>
+            <table>
+                <tr><th>Component</th><th>Version</th></tr>
+                <tr><td>Angie Server</td><td>Server software: Angie/1.11.3 Angie server version: 1.11.3</td></tr>
+                <tr><td>PHP</td><td>8.3.30</td></tr>
+                <tr><td>MariaDB</td><td><span class="success">10.11.16-MariaDB-ubu2204</span> <small>(Connected via root)</small> <small style="color:var(--green);">Ready</small></td>
+            </tr>
+            </table>
+        </section>
+
+        <section id="db" class="card">
+            <h2>Database Connection</h2>
+            <p>Server: <code>  db  </code> </p>
+            <table>
+                <tr><th>Root</th><th>User</th></tr>
+                <tr><td>Database: <code>ampdb</code></td><td>Database: <code>ampdb</code></td></tr>
+                <tr><td>User: <code>root</code></td><td>User: <code>ampuser</code></td></tr>
+                <tr><td>Pass: <code>rootpass123</code></td><td>Pass: <code>ampass456</code></td></tr>     
+            </table>
+        </section>
+
+        <section id="db-config" class="card">
+            <h2>Database Configuration</h2>
+
+            <form>
+                <table style="width:100%; margin-bottom:1.5rem;">
+                    <tr>
+                        <th>Root (admin)</th>
+                        <th>App User</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            User: <input type="text" name="root_user" value="root_user" required>
+                            Password: <input type="password" name="root_pass" value="root_pass" required>
+                        </td>
+                        <td>
+                            User: <input type="text" name="app_user" value="app_user" required>
+                            Password: <input type="password" name="app_pass" value="app_pass" required>
+                            Database: <input type="text" name="app_db" value="app_db" required>
+                        </td>
+                    </tr>
+                </table>
+
+                <label class="custom-checkbox">
+                    <input type="checkbox" name="create_db" value="1" checked>
+                    Create database if it doesn't exist and grant privileges to app user
+                </label>
+
+                <button type="submit" name="test_db">Test Connection & Create (if checked)</button>
+            </form>
+            
+            <div class="db-result">
+                <p><strong>Status:</strong> <span class="success"></span></p>
+                <p><strong>User Test:</strong> <span class="success">App user connected !</span></p>
+                <p><strong>Version:</strong> 10.11.16-MariaDB-ubu2204</p>
+                <p><strong>Existing databases:</strong></p>
+                <ul class="db-list">
+                    <li style="color:var(--primary);font-weight:bold;">ampdb</li>
+                    <li>amptest</li>
+                    <li>information_schema</li>
+                    <li>mysql</li>
+                    <li>performance_schema</li>
+                    <li>sys</li>
+                </ul>
+                <p style="color:var(--muted);">Pick a different name if yours is listed.</p>
+            </div>
+            
+            
+        </section>
+
+
+        <section id="extensions" class="card">
+            <h2>PHP Extensions (commonly used)</h2>
+            <ul style="columns: 3; list-style:none; padding:0; column-gap: 2rem;">
+                <li style="margin-bottom:0.6rem;">pdo_mysql: 
+                    <strong class="status-good">enabled</strong>
+                </li>
+                <li style="margin-bottom:0.6rem;">gd: 
+                    <strong class="status-good">enabled</strong>
+                </li>
+                <li style="margin-bottom:0.6rem;">curl: 
+                    <strong class="status-good">enabled</strong>
+                </li>
+                <li style="margin-bottom:0.6rem;">mbstring: 
+                    <strong class="status-good">enabled</strong>
+                </li>
+                <li style="margin-bottom:0.6rem;">openssl: 
+                    <strong class="status-good">enabled</strong>
+                </li>
+                <li style="margin-bottom:0.6rem;">json: 
+                    <strong class="status-good">enabled</strong>
+                </li>
+                <li style="margin-bottom:0.6rem;">xml: 
+                    <strong class="status-good">enabled</strong>
+                </li>
+                <li style="margin-bottom:0.6rem;">zip: 
+                    <strong class="status-good">enabled</strong>
+                </li>
+                <li style="margin-bottom:0.6rem;">intl: 
+                    <strong class="status-good">enabled</strong>
+                </li>
+                <li style="margin-bottom:0.6rem;">fileinfo: 
+                    <strong class="status-good">enabled</strong>
+                </li>
+            </ul>
+        </section>
+
+        <section id="limits" class="card">
+            <h2>PHP Limits</h2>
+            <table>
+                <tbody><tr><th>Setting</th><th>Value</th></tr>
+                    <tr><td>memory_limit</td><td>256M</td></tr>
+                    <tr><td>max_execution_time</td><td>300 seconds</td></tr>
+                    <tr><td>upload_max_filesize</td><td>50M</td></tr>
+                    <tr><td>post_max_size</td><td>50M</td></tr>
+                    <tr><td>max_input_vars</td><td>5000</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="credential" class="card">
+            <h2>Credentials</h2>
+            <p>This is a local development stack.</p>
+            <ul style="margin:1rem 0; padding-left:1.5rem; line-height:1.6;">
+                <li>No passwords are stored or shown here</li>
+                <li>Edit <code>docker-compose.yml</code> or <code>.env</code> for changes</li>
+                <li>SSL: self-signed via mkcert (trusted locally after install)</li>
+                <li>All configuration files are on host: <code>[C:][D:]or[USB]\amp\config\...</code></li>
+            </ul>
+        </section>
+
+        <section id="custom" class="card">
+            <h2>Customization</h2>
+            <p>This is Open Source.</p>
+            <p>This stack is intentionally kept small and readable.<br/>
+            You can open every .bat file, every .conf file, every docker-compose.yml.<br/>
+            Change them. Break them. Fix them.<br/>
+            That is how you really learn.
+            </p>
+            <br/>
+            <p>To add more PHP extensions, edit the Dockerfile and rebuild the image.</p>
+            <p>To add more services (Redis, Mailhog, etc), edit docker-compose.yml and add configs.</p>
+            <p>To contribute improvements, submit a PR on GitHub: <a href="https://github.com/gigamaster/amp" target="_blank">https://github.com/gigamaster/amp</a></p>
+        </section>
+
+    </div>
+</div>
+
+<footer>
+    AMP – Angie • MariaDB • PHP • CA-SSL<br>
+    <small>© <?= date('Y') ?> gigamaster • <a href="https://github.com/gigamaster/amp" target="_blank">GitHub - AMP</a></small>
+</footer>
+<script>
+// header background change when scrolled
+window.addEventListener('scroll', () => {
+    document.querySelector('header').classList.toggle('scrolled', window.scrollY > 50);
+});
+</script>
+</body>
+</html>

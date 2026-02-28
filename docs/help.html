@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AMP Help • angie.local</title>
+    <meta name="description" content="AMP-MANAGER Dashboard">
+    <link rel="icon" href="./favicon/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="./assets/style.css"/>
+</head>
+<body>
+
+<header>
+    <div class="logo">AMP • angie.local</div>
+    <div class="header-buttons">
+        <a href="index.html">Dashboard</a>
+        <a href="help.html">Help</a>
+        <a href="about.html">About</a>
+    </div>
+</header>
+
+<div class="main">
+    <aside>
+        <ul>
+            <li><a href="#getting-started" class="active">Getting Started</a></li>
+            <li><a href="#amp-server">AMP Server</a></li>
+            <li><a href="#ssl-certificates">SSL & Certificates</a></li>
+            <li><a href="#setup-domains">Setup .local Domains</a></li>
+            <li><a href="#database-settings">Database Settings</a></li>
+            <li><a href="#troubleshooting">Troubleshooting</a></li>
+            <li><a href="#docker">Docker</a></li>
+        </ul>
+    </aside>
+
+    <div class="content">
+
+        <section id="getting-started" class="card">
+            <h2>Getting Started</h2>
+            <p><strong>angie.local</strong> is your control center. It serves the documentation and health-check dashboard.</p>
+            <p>If this page isn't loading properly, check the following:</p>
+            <ul>
+                <li>Docker Desktop is running</li>
+                <li>The container named <code>angie</code> is in status <strong>Up</strong></li>
+                <li>Run <code>docker compose ps</code> in your project folder to verify</li>
+            </ul>
+            <p>Access this help page anytime via <code>help.html</code></p>
+        </section>
+
+        <section id="amp-server" class="card">
+            <h2>AMP Server</h2>
+            <p>Angie is a modern fork of Nginx with enhanced features, better performance tuning options, and active maintenance.</p>
+            <p>In this AMP stack:</p>
+            <ul>
+                <li>Angie handles all HTTP/HTTPS traffic</li>
+                <li>PHP-FPM processes dynamic content</li>
+                <li>All configuration files live on your host: <code>D:\amp\config\angie-sites\*.conf</code></li>
+            </ul>
+            <p>More detailed setup information will be added here later.</p>
+            <p>https://en.angie.software/angie/docs/installation/external-modules/</p>
+        </section>
+
+        <section id="ssl-certificates" class="card">
+            <h2>SSL & Certificates</h2>
+            <p>We use <strong>mkcert</strong> to create locally trusted certificates.</p>
+            <p>If browsers show a red warning or "Not Secure":</p>
+            <ul>
+                <li>Run Option 9 in amp-manager.bat to re-trust the AMP-Manager Root Authority</li>
+                <li>Or manually run <code>mkcert -install</code> in your command prompt (as Administrator the first time)</li>
+                <li>After trusting, restart your browser</li>
+            </ul>
+            <p>All certificates are stored in <code>D:\amp\config\certs\</code></p>
+        </section>
+
+        <section id="setup-domains" class="card">
+            <h2>Setup .local Domains</h2>
+            <p>To add a new local site:</p>
+            <ol>
+                <li>Create your project folder inside <code>D:\amp\www\yourproject.local\</code></li>
+                <li>Add a config file <code>D:\amp\config\angie-sites\yourproject.local.conf</code></li>
+                <li>Use Option 1 in amp-manager.bat to:
+                    <ul>
+                        <li>Generate SSL certificate (mkcert)</li>
+                        <li>Add entry to Windows hosts file (127.0.0.1 yourproject.local)</li>
+                        <li>Reload Angie</li>
+                    </ul>
+                </li>
+                <li>Ensure your .conf file has the correct <code>server_name yourproject.local;</code> and <code>root /www/yourproject.local/public;</code> (or similar)</li>
+            </ol>
+            <p>Tip: Use the wildcard DNS solution (Acrylic or similar) to avoid editing hosts file every time.</p>
+        </section>
+
+        <section id="database-settings" class="card">
+            <h2>Database Settings</h2>
+            <p>Default credentials (change in production or via docker-compose):</p>
+            <ul>
+                <li>Host: <code>db</code> (MariaDB container name)</li>
+                <li>Root user: <code>root</code></li>
+                <li>Root password: set in docker-compose or .env</li>
+                <li>Application user: <code>ampuser</code></li>
+                <li>Default database: <code>ampdb</code></li>
+            </ul>
+            <p>To create a new database:</p>
+            <ol>
+                <li>Open phpMyAdmin (via Database Admin link) or any MySQL client</li>
+                <li>Login as root</li>
+                <li>Create new database → assign privileges to ampuser if needed</li>
+            </ol>
+            <p>Manage databases with root credentials or create dedicated users per project.</p>
+
+            <div id="code-lab" data-height="420"></div>
+
+        <script type="module">
+        import { createPlayground } from 'https://cdn.jsdelivr.net/npm/livecodes@0.13.0';
+
+        createPlayground('#code-lab', {
+            params: {
+            language: 'php',
+            php: '<?php\n//db\n  $db_host="db";\n  $db_port=3306;\n  $root_user="root";\n  $root_pass="rootpass123";\n  $app_user="ampuser";\n  $app_pass="ampass456";\n  $app_db="ampdb";\n  $mariadb_version=null;\n  $mariadb_connect_msg="";\nfunction try_mariadb_version($host, $port, $user, $pass, $db="") {\n$mysqli=@new mysqli($host, $user, $pass, $db, $port);\nif ($mysqli && !$mysqli->connect_error) {\n$res=$mysqli->query("SELECT VERSION() AS v");\nif ($res) {\n$row=$res->fetch_assoc();\n$mysqli->close();\nreturn $row["v"] ?? "unknown";\n}\n$mysqli->close();\nreturn "connected but version query failed";\n}\nreturn false;\n}\n$ver=try_mariadb_version($db_host, $db_port, $app_user, $app_pass, $app_db);\nif ($ver !==false) {\n$mariadb_version=$ver;\n$mariadb_connect_msg="Connected as app user ($app_user) to $app_db";\n} else {\n$ver2=try_mariadb_version($db_host, $db_port, $root_user, $root_pass, $app_db);\nif ($ver2 !==false) {\n$mariadb_version=$ver2;\n$mariadb_connect_msg="Connected as root ($root_user) to $app_db";\n} else {\n$mariadb_version="Not reachable / credentials invalid";\n$mariadb_connect_msg="Connection failed with both app user and root";\n}\n?>}',
+            view: 'php', // Shows the output side-by-side
+            mode: 'lite',
+            mode: 'codeblock',
+            //console: 'open'
+            tools : "none",
+            },
+            config: {
+                activeEditor: 'php',
+                theme: 'dark'
+            }
+        });
+        </script>
+        </section>
+
+        <section id="troubleshooting" class="card">
+            <h2>Troubleshooting</h2>
+            <ul>
+                <li><strong>Port 80/443 conflict</strong>: Close Skype, IIS, Apache, or any other web server using these ports.</li>
+                <li><strong>Site not loading</strong>: Check Docker logs: <code>docker logs angie</code></li>
+                <li><strong>SSL warning</strong>: Re-trust mkcert root CA (see SSL section)</li>
+                <li><strong>Domain not resolving</strong>: Verify entry in <code>C:\Windows\System32\drivers\etc\hosts</code></li>
+                <li><strong>PHP errors</strong>: Check logs in <code>D:\amp\logs\php\</code></li>
+            </ul>
+        </section>
+
+        <section id="docker" class="card">
+            <h2>Docker</h2>
+            <p>Common daily commands:</p>
+            <ul>
+                <li>Check status: <code>docker compose ps</code></li>
+                <li>View logs: <code>docker compose logs -f angie</code> or <code>docker logs angie</code></li>
+                <li>Restart stack: <code>docker compose down && docker compose up -d</code></li>
+                <li>Enter container: <code>docker compose exec angie sh</code> or <code>docker compose exec php sh</code></li>
+                <li>Reload Angie without restart: <code>docker compose exec angie angie -s reload</code></li>
+            </ul>
+            <p>Container crash? Look for syntax errors in config files or missing mounts in <code>docker-compose.yml</code>.</p>
+        </section>
+
+    </div>
+</div>
+
+<footer>
+    AMP – Angie • MariaDB • PHP • CA-SSL<br>
+    <small>© <?= date('Y') ?> gigamaster • <a href="https://github.com/gigamaster/amp" target="_blank">GitHub - AMP</a></small>
+</footer>
+
+</body>
+</html>
