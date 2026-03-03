@@ -651,7 +651,7 @@ echo     add_header 'Access-Control-Allow-Origin' '*' always;
 echo     add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS, DELETE, PUT' always;
 echo     add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization' always;
 echo.
-echo     # SERVER IDENTITY
+echo     # ANGIE SERVER IDENTITY
 echo     add_header X-Served-By "Angie 1.11.3 [DEV-MODE] - !FULL_DOMAIN!" always;
 echo.
 echo     root /www/!FULL_DOMAIN!;
@@ -692,6 +692,22 @@ echo.
 echo         add_header X-FastCGI-Cache $upstream_cache_status always;
 echo     }
 echo.
+:: CONDITIONAL 'angie.local' BLOCK
+if "!DOMAIN_NAME!"=="angie" (
+echo     # DASHBOARD & API
+echo     # Route calls to the API for the dashboard
+echo     location /status/api/ {
+echo         api /status/;
+echo         allow all; 
+echo     }
+echo.
+echo     # Serve the dashboard static files
+echo     location /status/ {
+echo         alias /usr/share/angie/html/status/;
+echo         index index.html;
+echo     }
+)
+:: END CONDITIONAL BLOCK
 echo     # Protect error pages
 echo     location ~ ^/error-pages/.*\.php$ {
 echo        root /www/!FULL_DOMAIN!;
