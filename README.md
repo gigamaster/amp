@@ -42,14 +42,6 @@ REM
 > That is how you really learn.
 ```
 
-You are spot on—the current draft assumes the user already has everything running, which is the "Junior Dev" mistake in documentation. Beginners need a **linear path** from nothing to their first green light.
-
-For the **v1.11.3** release, we should rewrite this as a "Mission Log" or a "Quick Start Roadmap." It needs to be authoritative yet encouraging.
-
-### The "Architect's" Revised Getting Started
-
----
-
 ## 🚀 Quick Start
 
 **Your Local Dev Environment**
