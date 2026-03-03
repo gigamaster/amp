@@ -41,48 +41,148 @@ REM
 > That is how you really learn.
 ```
 
+## Features
+
+| Stack    | Description        |
+|----------|--------------------|
+| **AMP-Manager**| Open utility to scaffold .local domains, and generate certificate + config |
+| **Angie** | Modern NGINX fork with HTTP/3 support, modules, and API stats |
+| **MariaDB** |  version 10.++, MySQL-compatible |
+| **PHP** |  version 8.3.++, common extensions: mysqli, pdo_mysql, gd, zip, etc. |
+| **CA / SSL** |  **HTTPS** using **mkcert** for easy install a CA, and green lock all `.local` domains |
+
+
 ## Quick Start
 
 **Your Local Dev Environment**
 
 Follow these steps in order to build your first project.
 
+### Prerequisites
+- Windows 10/11 (64-bit)
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) (with WSL2 backend recommended)
+- Administrator privileges (for initial CA installation)
+
 ### 1. Preparation
 
 * **Download:**   
-  Clone the repository or download the ZIP and extract it to a folder e.g. `D:\amp\`
+  Clone the repository or download a release ZIP and extract it to a folder e.g. `D:\amp\`
+
+```cmd
+git clone https://github.com/gigamaster/amp.git
+```
+
 * **Launch Docker:**   
   Open Docker Desktop and ensure the engine is running.
+   
 * **Boot the Stack:**   
-  Open a terminal in your project folder and run:
+  From amp folder (where docker-compose.yml lives), open a terminal and run:
 
 ```bash
 docker compose up -d
 ```
 
-### 2. The AMP-MANAGER Setup
+### 2. First Run (One-Time Setup)
+
+1. Navigate to `config` folder
+2. **Right-click `AMP-MANAGER.bat` → UAC/elevation to run as administrator**
+3. Click **"Yes"** when Windows Security dialog appears, mkcert install your Certificate Authority (CA)
+4. Follow prompts to create your first domain e.g. `angie` → becomes `https://angie.local`
+
+
+> [!TIP]
+> Keep `ANP-MANAGER.bat` handy on your desktop, run `Create-shortcut.bat`  
+
+
+AMP-MANAGER.bat runs as admin whenever you start a new project.  
+Takes 10 seconds to get a green-lock HTTPS site ready for development.
+
+
+### 3. The AMP-MANAGER Setup
 
 Run **`AMP-MANAGER.bat`** as Administrator. This tool is the "Architect" of your environment.
 
-* **Install CA:** On the first run, it installs your **Certificate Authority**. This allows your browser to trust your local `.local` sites with green SSL locks.
+* On the first run, it installs your **Certificate Authority**.  
+  This allows your browser to trust your local `.local` sites with green SSL locks.
 * **Add Your First Site:** Select **[N] New Domain** and type `angie`.
-* *Note: The manager automatically adds `.local`, generates your SSL `.pem` files, and creates the server configuration.*
+* Note that AMP-MANAGER automatically adds `.local`  
+  - optionally scaffolds new domain folder
+  - generates the domain SSL `.pem` files
+  - creates the server configuration.*
 
+* **Reload Angie:** For the server to see your new site configuration, restart the container:  
 
-### 3. Finalize & Browse
-
-* **Reload Angie:** For the server to see your new site configuration, from AMP-MANAGER, or restart the container:
+from AMP-MANAGER, or terminal:
 
 ```bash
 docker restart angie
 ```
 
+### 4. Test Your Site
 
-* **Visit the default angie.local:** Open your browser and go to **`https://angie.local`**.
-* This is your **Control Center** for documentation, health checks, and status monitoring.
+On AMP-MANAGER, Select **[O] Open Browser** and visit the default **angie.local**
+or open your browser and go to **`https://angie.local`**, check ✅ **Green lock!**
+
+The default domain is your **Control Center** for documentation, health checks, and status monitoring.
+
+
+<p align="center">
+  <br>
+  <a href="https://gigamaster.github.io/amp/">anglie.local → preview [docs]</a>
+  <br><br><br>
+</p>
+
+
+## 📂 Project Structure - Workflow
+
+```
+amp/
+├── config/
+│   └── AMP-MANAGER.bat  ← First run as Admin to manage domains/certs
+├── www/
+│   └── project.local/   ← Your project files (index.php/html here)
+├── docker-compose.yml   ← Stack definition (Angie + MariaDB + PHP)
+└── README.md
+```
+
+---
+
+## ⚙️ Daily Usage
+
+| Command | Description |
+|---------|-------------|
+| `docker compose up -d` | Start stack (run from project root) |
+| `docker compose down` | Stop stack |
+| `docker compose logs -f angie` | Live Angie logs |
+| `docker compose logs -f php` | Live PHP logs |
+| `docker compose restart angie` | Reload configs after domain changes |
+
+---
+
+## 🔒 Domain Management - AMP-MANAGER.bat
+
+Run `config/AMP-MANAGER.bat` **Windows prompt as Administrator** to:
+
+1. **Add domain**: Enter `project` → creates:
+   - Certificate: `config/certs/project.local.pem`
+   - Hosts entry: `127.0.0.1 project.local`
+   - Web root: `www/project.local/`
+   - Angie config: `config/angie-sites/project.local.conf`
+   - Auto-restart Angie + open browser (optional)
+
+2. **Remove domain**: Comments out hosts entry + optional cert cleanup  
+   *(Backup saved as `hosts.bak`)*
+
+> ✅ **No manual config needed** — everything automated per workflow
+
+---
+
+
+
 
 
 ## Overall Workflow
+
 ### How AMP-Manager enables local development
 This diagram shows the high-level workflow a student follows when using AMP-Manager:
 
@@ -224,8 +324,11 @@ Windows Host (D:\amp\...)
 │   │   ├── angie-sites/         ← Angie vhost configs (*.local.conf) 
 │   │   ├── certs/               ← SSL certs/keys (from mkcert)
 │   │   ├── db-init/             # SQL bootstrap (root permissions/grants)
-│   │   └── php.ini              ← Custom PHP settings
-│   └── logs/                    ← PHP & app logs
+│   │   ├── mkcert.exe           # Mkcert command-line utility (CA and SSL)
+│   │   ├── angie.conf           # Angie Server configuration (modules)
+│   │   └── php.ini              ← PHP configuration, custom settings
+│   ├── data/                    ← Database 
+│   └── logs/                    ← Angie, DB, PHP & app logs
 │
 │   (You edit files here directly — no container copy/sync needed)
 │                                   
@@ -250,7 +353,7 @@ Windows Host (D:\amp\...)
 │       │   │   └─ Reads code from /www (your host files — live reload)
 │       │   │                             
 │       │   └── db (mariadb:10.11)
-│       │       └─ Data persisted (named volume or bind mount)
+│       │       └─ Data persisted (bind mount D:\amp\data\)
 │       │
 │       └── Workflow arrows (simplified)
 │
@@ -258,117 +361,6 @@ Windows Host (D:\amp\...)
     ↓ (DNS: hosts file or wildcard → 127.0.0.1)
     → Windows host ports 80/443 → Docker published ports → Angie container
 ```
-
-## 🔧 Features
-
-- **Angie** (modern NGINX fork) with HTTP/3 support
-- **MariaDB** 11.x (MySQL-compatible)
-- **PHP 8.3** (with common extensions: mysqli, pdo_mysql, gd, zip, etc.)
-- **Automatic HTTPS** via mkcert, green lock for all `.local` domains
-- **Per-project isolation**, each domain has its own certificate + config
-- **[ ] Todo Fully portable App**, no installation required that works from any location
-
----
-
-## Quick Start
-
-### 1. Prerequisites
-- Windows 10/11 (64-bit)
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/) (with WSL2 backend recommended)
-- Administrator privileges (for initial CA installation)
-
-### 2. Setup
-
-Option A: Git clone
-
-```cmd
-git clone https://github.com/gigamaster/amp.git
-```
-
-Option B: Download ZIP → Extract to ANY location (C:\amp, D:\dev, USB drive, etc.)
-
-### 3. First Run (One-Time Setup)
-
-1. Navigate to `config` folder
-2. **Right-click `AMP-MANAGER.bat` → UAC/elevation to run as administrator**
-3. Click **"Yes"** when Windows Security dialog appears, mkcert install your Certificate Authority (CA)
-4. Follow prompts to create your first domain e.g. `angie` → becomes `https://angie.local`
-
-
-> [!TIP]
-> Keep `ANP-MANAGER.bat` handy on your desktop, run Create-shortcut.bat  
-
-AMP-MANAGER.bat runs as admin whenever you start a new project.  
-Takes 10 seconds to get a green-lock HTTPS site ready for development.
-
-
-### 4. Start the Stack
-From amp folder (where docker-compose.yml lives):
-
-```cmd
-docker compose up -d
-```
-
-### 5. Test Your Site
-1. Create `www/angie.local/index.php`:
-   ```php
-   <?php phpinfo();
-   ```
-2. Visit `https://angie.local` → ✅ **Green lock!**
-
-
-
-<p align="center">
-  <br>
-  <a href="https://gigamaster.github.io/amp/">anglie.local → preview [docs]</a>
-  <br><br><br>
-</p>
-
-
-
-## 📂 Project Structure - Workflow
-
-```
-amp/
-├── config/
-│   └── AMP-MANAGER.bat  ← First run as Admin to manage domains/certs
-├── www/
-│   └── project.local/   ← Your project files (index.php/html here)
-├── docker-compose.yml   ← Stack definition (Angie + MariaDB + PHP)
-└── README.md
-```
-
----
-
-## ⚙️ Daily Usage
-
-| Command | Description |
-|---------|-------------|
-| `docker compose up -d` | Start stack (run from project root) |
-| `docker compose down` | Stop stack |
-| `docker compose logs -f angie` | Live Angie logs |
-| `docker compose logs -f php` | Live PHP logs |
-| `docker compose restart angie` | Reload configs after domain changes |
-
----
-
-## 🔒 Domain Management - AMP-MANAGER.bat
-
-Run `config/AMP-MANAGER.bat` **Windows prompt as Administrator** to:
-
-1. **Add domain**: Enter `project` → creates:
-   - Certificate: `config/certs/project.local.pem`
-   - Hosts entry: `127.0.0.1 project.local`
-   - Web root: `www/project.local/`
-   - Angie config: `config/angie-sites/project.local.conf`
-   - Auto-restart Angie + open browser (optional)
-
-2. **Remove domain**: Comments out hosts entry + optional cert cleanup  
-   *(Backup saved as `hosts.bak`)*
-
-> ✅ **No manual config needed** — everything automated per workflow
-
----
 
 ## 💡 PHP Version Tip
 
