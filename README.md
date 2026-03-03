@@ -454,6 +454,12 @@ Desktop portable app
 ---
 
 
-[![GitHub Repo](https://img.shields.io/badge/GitHub-Repository-181717?logo=github)](https://github.com/gigamaster/angie-amp)  
-
-*Made with ❤️ for simplicity and reliability*
+<p align="center">
+<br>  
+  <a href="https://github.com/gigamaster/amp">
+  <img src="./favicon/docker-dev-stack.svg" width="auto" alt="Docker Dev Stack Angie MariaDB PHP">
+<br>
+<i>
+Made with ❤️ for simplicity and reliability
+</i>
+</p>
