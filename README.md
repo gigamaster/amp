@@ -290,12 +290,15 @@ Option B: Download ZIP → Extract to ANY location (C:\amp, D:\dev, USB drive, e
 1. Navigate to `config` folder
 2. **Right-click `AMP-MANAGER.bat` → UAC/elevation to run as administrator**
 3. Click **"Yes"** when Windows Security dialog appears, mkcert install your Certificate Authority (CA)
-4. Follow prompts to create your first domain (e.g., `angie` → becomes `https://angie.local`)
+4. Follow prompts to create your first domain e.g. `angie` → becomes `https://angie.local`
+
 
 > [!TIP]
-> Keep `ANP-MANAGER.bat` handy on your desktop  
-> Run as admin whenever you start a new project.  
-> Takes 10 seconds to get a green-lock HTTPS site ready for development.
+> Keep `ANP-MANAGER.bat` handy on your desktop, run Create-shortcut.bat  
+
+AMP-MANAGER.bat runs as admin whenever you start a new project.  
+Takes 10 seconds to get a green-lock HTTPS site ready for development.
+
 
 ### 4. Start the Stack
 From amp folder (where docker-compose.yml lives):
@@ -311,7 +314,6 @@ docker compose up -d
    ```
 2. Visit `https://angie.local` → ✅ **Green lock!**
 
----
 
 
 <p align="center">
@@ -319,6 +321,7 @@ docker compose up -d
   <a href="https://gigamaster.github.io/amp/">anglie.local → preview [docs]</a>
   <br><br><br>
 </p>
+
 
 
 ## 📂 Project Structure - Workflow
