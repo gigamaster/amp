@@ -17,10 +17,10 @@ html {
     scroll-behavior: smooth;
 }
 body {
-    font-family: system-ui, sans-serif;
+    
     background: var(--bg);
     color: var(--text);
-    min-height: 100vh;
+    font-family: system-ui, sans-serif;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
@@ -165,6 +165,7 @@ aside a:hover, aside a.active {
 
 /* SCROLL fix */
 section[id] {
+    line-height: 1.875;
     scroll-margin-top: calc(var(--header-height) + 2.5rem);
     scroll-snap-margin-top: calc(var(--header-height) + 2.5rem);
 }
@@ -174,8 +175,14 @@ section[id] h2 {
     margin-bottom: 1.2rem;
 }
 
-h1, h2 {
+h2, h3, h4 {
     color: var(--primary);
+}
+h2, h3, h4 {
+    margin: 1rem auto;
+}
+h4, h5 {
+    text-transform: uppercase;
 }
 
 table {
@@ -196,7 +203,7 @@ th { color: var(--primary); font-weight: 600; }
 .error  { color: var(--red);   font-weight: bold; }
 
 code {
-    background:hsl(227 25% 15%);;
+    background:hsl(227 25% 10%);
     border: 1px solid var(--border);
     border-radius: 0.25rem;
     padding: 0.25rem 0.5rem;
@@ -299,6 +306,11 @@ form table td {
     background:hsl(227 25% 12%); 
     min-height:100px;
 }
+
+ul {
+    margin: 1rem 1.5rem;
+}
+
 ul.db-list {
     columns: 2;              /* Number of columns */
     column-gap: 1rem;

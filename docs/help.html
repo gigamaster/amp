@@ -44,6 +44,33 @@
                 <li>Run <code>docker compose ps</code> in your project folder to verify</li>
             </ul>
             <p>Access this help page anytime via <code>help.html</code></p>
+
+            <h3>Quick Start</h3>
+            <h4>Requirements</h4>
+            <ul dir="auto">
+<li><strong>Download:</strong> Clone the repository or download the ZIP and extract it to a folder e.g. <code>D:\amp\</code></li>
+<li><strong>Launch Docker:</strong> Open Docker Desktop and ensure the engine is running.</li>
+<li><strong>Boot the Stack:</strong> Open a terminal in your project folder and run:</li>
+</ul>
+<p><code>docker compose up -d</code></p>
+
+<h4>The AMP-MANAGER Setup</h4>
+
+<p>Run <code>AMP-MANAGER.bat</code> as Administrator. This tool is the "Architect" of your environment.</p>
+
+<ul dir="auto">
+<li><strong>Install CA:</strong> On the first run, it installs your <strong>Certificate Authority</strong>.<br> This allows your browser to trust your local <code>.local</code> sites with green SSL locks.</li>
+<li><strong>Add Your First Site:</strong> Select <strong>[N] New Domain</strong> and type <code>angie</code></li>
+<li><em>Note: The manager automatically adds <code>.local</code>, generates your SSL <code>.pem</code> files, and creates the server configuration.</em></li>
+</ul>
+
+<h4>Finalize & Browse</h4>
+<ul dir="auto">
+<li><strong>Reload Angie:</strong> For the server to see your new site configuration, from AMP-MANAGER, or restart the container:</li>
+<li><strong>Visit the default angie.local:</strong> Open your browser and go to <strong><code>https://angie.local</code></strong></li>
+<li>This is your <strong>Control Center</strong> for documentation, health checks, and status monitoring.</li>
+</ul>
+
         </section>
 
         <section id="amp-server" class="card">
@@ -107,27 +134,41 @@
             </ol>
             <p>Manage databases with root credentials or create dedicated users per project.</p>
 
-            <div id="code-lab" data-height="420"></div>
+            <div id="code-lab" data-height="330"></div>
 
-        <script type="module">
-        import { createPlayground } from 'https://cdn.jsdelivr.net/npm/livecodes@0.13.0';
+<script type="module">
+import { createPlayground } from 'https://cdn.jsdelivr.net/npm/livecodes@0.13.0';
 
-        createPlayground('#code-lab', {
-            params: {
-            language: 'php',
-            php: '<?php\n//db\n  $db_host="db";\n  $db_port=3306;\n  $root_user="root";\n  $root_pass="rootpass123";\n  $app_user="ampuser";\n  $app_pass="ampass456";\n  $app_db="ampdb";\n  $mariadb_version=null;\n  $mariadb_connect_msg="";\nfunction try_mariadb_version($host, $port, $user, $pass, $db="") {\n$mysqli=@new mysqli($host, $user, $pass, $db, $port);\nif ($mysqli && !$mysqli->connect_error) {\n$res=$mysqli->query("SELECT VERSION() AS v");\nif ($res) {\n$row=$res->fetch_assoc();\n$mysqli->close();\nreturn $row["v"] ?? "unknown";\n}\n$mysqli->close();\nreturn "connected but version query failed";\n}\nreturn false;\n}\n$ver=try_mariadb_version($db_host, $db_port, $app_user, $app_pass, $app_db);\nif ($ver !==false) {\n$mariadb_version=$ver;\n$mariadb_connect_msg="Connected as app user ($app_user) to $app_db";\n} else {\n$ver2=try_mariadb_version($db_host, $db_port, $root_user, $root_pass, $app_db);\nif ($ver2 !==false) {\n$mariadb_version=$ver2;\n$mariadb_connect_msg="Connected as root ($root_user) to $app_db";\n} else {\n$mariadb_version="Not reachable / credentials invalid";\n$mariadb_connect_msg="Connection failed with both app user and root";\n}\n?>}',
-            view: 'php', // Shows the output side-by-side
-            mode: 'lite',
-            mode: 'codeblock',
-            //console: 'open'
-            tools : "none",
-            },
-            config: {
-                activeEditor: 'php',
-                theme: 'dark'
-            }
-        });
-        </script>
+createPlayground('#code-lab', {
+    params: {
+    language: 'markdown',
+    view: 'markdown', // Shows the output side-by-side
+    //mode: 'lite',
+    mode: 'codeblock',
+    //tools : "none",
+    theme: 'dark',
+    // php: '<?php\n//db\n  $db_host="db";\n  $db_port=3306;\n  $root_user="root";\n  $root_pass="rootpass123";\n  $app_user="ampuser";\n  $app_pass="ampass456";\n  $app_db="ampdb";\n  $mariadb_version=null;\n  $mariadb_connect_msg="";\nfunction try_mariadb_version($host, $port, $user, $pass, $db="") {\n$mysqli=@new mysqli($host, $user, $pass, $db, $port);\nif ($mysqli && !$mysqli->connect_error) {\n$res=$mysqli->query("SELECT VERSION() AS v");\nif ($res) {\n$row=$res->fetch_assoc();\n$mysqli->close();\nreturn $row["v"] ?? "unknown";\n}\n$mysqli->close();\nreturn "connected but version query failed";\n}\nreturn false;\n}\n$ver=try_mariadb_version($db_host, $db_port, $app_user, $app_pass, $app_db);\nif ($ver !==false) {\n$mariadb_version=$ver;\n$mariadb_connect_msg="Connected as app user ($app_user) to $app_db";\n} else {\n$ver2=try_mariadb_version($db_host, $db_port, $root_user, $root_pass, $app_db);\nif ($ver2 !==false) {\n$mariadb_version=$ver2;\n$mariadb_connect_msg="Connected as root ($root_user) to $app_db";\n} else {\n$mariadb_version="Not reachable / credentials invalid";\n$mariadb_connect_msg="Connection failed with both app user and root";\n}\n?>}',
+    markdown: '```nginx\n' +
+'    # DASHBOARD & API\n' +
+'    # Route calls to the API for the dashboard\n' +
+'    location /status/api/ {\n' +
+'        api /status/;\n' +
+'        allow all;\n' +
+'    }\n' +
+'\n' +
+'    # Serve the dashboard static files\n' +
+'    location /status/ {\n' +
+'        alias /usr/share/angie/html/status/;\n' +
+'        index index.html;\n' +
+'    }\n' +
+'\n' +
+'    # Protect error pages\n' +
+'}\n' +
+'```',
+
+    }
+});
+</script>
         </section>
 
         <section id="troubleshooting" class="card">

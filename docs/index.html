@@ -54,15 +54,16 @@
 
         <section id="welcome-app" class="card">
             <h2>Welcome to AMP</h2>
-            <p>Your local development stack is ready.</p>
+            <p>Dev Stack link opens Angie Status. This link opens the docs [Help].</p>
             <br/>
-            <P><a href="student.php" target="_blank">Real-time server status</a></P>
+            <P><a href="help.html">Real-time server status</a></P>
         </section>
 
         <section id="domains" class="card">
             <h2>Domains: 1 total</h2>
+            <p>Dev Stack links open local sites. This link opens the docs [Help].</p>
             <div class="domains-list">
-                <div class="domain-tag"><a href="#" target="_blank">angie.local</a></div>
+                <div class="domain-tag"><a href="help.html">angie.local</a></div>
             </div>
         </section>
 
@@ -91,7 +92,7 @@
         <section id="db-config" class="card">
             <h2>Database Configuration</h2>
 
-            <form>
+            <form  onsubmit="event.preventDefault()">
                 <table style="width:100%; margin-bottom:1.5rem;">
                     <tr>
                         <th>Root (admin)</th>

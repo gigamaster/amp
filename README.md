@@ -268,7 +268,7 @@ Windows Host (D:\amp\...)
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### 1. Prerequisites
 - Windows 10/11 (64-bit)
