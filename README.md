@@ -313,6 +313,14 @@ docker compose up -d
 
 ---
 
+
+<p align="center">
+  <br>
+  <a href="https://gigamaster.github.io/amp/">anglie.local → preview [docs]</a>
+  <br><br><br>
+</p>
+
+
 ## 📂 Project Structure - Workflow
 
 ```
