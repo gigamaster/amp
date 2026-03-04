@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AMP | Live Status</title>
+    <style>
+        body {
+            background: #121212;
+            color: #e0e0e0;
+            font-family: 'Segoe UI', monospace;
+            margin: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+        }
+
+        h1 {
+            color: #97cb4d;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .card {
+            background: #1e1e1e;
+            padding: 16px;
+            border-radius: 6px;
+            border-left: 3px solid #97cb4d;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .card h3 {
+            margin: 0 0 10px 0;
+            color: #ffa500;
+            font-size: 1.1rem;
+        }
+
+        .stat {
+            font-size: 0.9rem;
+            margin: 5px 0;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .value {
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .loading {
+            text-align: center;
+            color: #888;
+            margin-top: 50px;
+        }
+
+        .controls-panel {
+            background: #1e1e1e;
+            padding: 6px 16px;
+            border-radius: 8px;
+            display: flex;
+            gap: 30px;
+            align-items: center;
+            margin-bottom: 32px;
+            border: 1px solid #333;
+        }
+
+        .server-info-bar {
+            background: #1a1a1a;
+            border-bottom: 2px solid #333;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            font-size: 13px;
+            color: #aaa;
+        }
+
+        .info-item {
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .info-item span {
+            color: #eee;
+            font-weight: bold;
+        }
+
+        .highlight {
+            color: #97cb4d !important;
+            /* Makes Generation pop */
+            background: rgba(76, 175, 80, 0.1);
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Container for the progress bar */
+        .progress-container {
+            width: 150px;
+            height: 12px;
+            background: #333;
+            border-radius: 6px;
+            overflow: hidden;
+            margin: 0 10px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #97cb4d, #81c784);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* The Value Badge on the right */
+        .value-badge {
+            background: #97cb4d;
+            color: #121212;
+            padding: 2px 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-weight: bold;
+            font-size: 14px;
+            min-width: 40px;
+            text-align: center;
+            margin-left: 5px;
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
+        }
+
+        .btn {
+            background: #555;
+            border: 1px solid #333;
+            border-radius: 0.25rem;
+            color: #97cb4d;
+            width: 30px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            background: #97cb4d;
+            color:#fff;
+        }
+
+        /* The Switch Styling */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 20px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 20px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked+.slider {
+            background-color: #97cb4d;
+        }
+
+        input:checked+.slider:before {
+            transform: translateX(20px);
+        }
+
+
+        .dashboard-footer {
+            margin-top: 40px;
+            padding: 20px;
+            border-top: 1px solid #333;
+            text-align: center;
+            color: #666;
+            font-size: 0.85rem;
+            font-style: italic;
+        }
+
+        .dashboard-footer code {
+            background: #222;
+            padding: 2px 5px;
+            border-radius: 3px;
+            color: #aaa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>AMP STACK : API MONITOR</h1>
+        <div id="server-info" class="server-info-bar">
+            <div class="info-item">Version: <span id="v-version">...</span></div>
+            <div class="info-item">Address: <span id="v-address">...</span></div>
+            <div class="info-item">Generation: <span id="v-gen" class="highlight">...</span></div>
+            <div class="info-item">Zones: <span id="v-zone">...</span></div>
+            <div class="info-item">Last Reload: <span id="v-load">...</span></div>
+            <div class="info-item">Active Conns: <span id="v-conn" style="color: #00d4ff;">...</span></div>
+        </div>
+        <div class="controls-panel">
+            <div class="control-group">
+                <span id="statusLabel">API: Enabled</span>
+                <label class="switch">
+                    <input type="checkbox" id="apiToggle" checked>
+                    <span class="slider round"></span>
+                </label>
+            </div>
+
+            <div class="control-group">
+                <span>Refresh Interval</span>
+                <button class="btn" onclick="adjustInterval(-10)">-</button>
+                <div class="progress-container">
+                    <div id="progressBar" class="progress-bar"></div>
+                </div>
+                <button class="btn" onclick="adjustInterval(10)">+</button>
+                <span id="intervalValue" class="value-badge">60s</span>
+            </div>
+        </div>
+
+        <div id="dashboard" class="grid">
+            <div class="loading">Initializing connection to Angie 1.11.3...</div>
+        </div>
+    </div>
+
+    <footer class="dashboard-footer">
+        <p>💡 <strong>Note:</strong> Stats live in volatile RAM. Running <code>docker down</code> will reset counters to
+            zero. Don't panic, it's a feature, not a bug! 🍺</p>
+    </footer>
+
+
+<script>
+    // --- CONFIGURATION & STATE ---
+    const STORAGE_KEY = 'amp-angie-upstat';
+    let updateTimer = null;
+
+    // Load from LocalStorage or set defaults (60s, Enabled)
+    let config = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {
+        enabled: true,
+        interval: 60
+    };
+
+async function updateStats() {
+    try {
+        // 1. Fetch from the API endpoint to ensure we get JSON, not HTML
+        const res = await fetch('/status/api/'); 
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        
+        const fullData = await res.json();
+
+        // --- GLOBAL INFO ---
+        const info = fullData.angie || {};
+        const conn = fullData.connections || {};
+        
+        document.getElementById('v-version').innerText = info.version || '---';
+        document.getElementById('v-address').innerText = info.address || '---';
+        document.getElementById('v-gen').innerText = info.generation || '0';
+        document.getElementById('v-conn').innerText = conn.active || '0';
+        
+        if (info.load_time) {
+            document.getElementById('v-load').innerText = new Date(info.load_time).toLocaleTimeString();
+        }
+
+        // --- WEBSITE ZONES (Data fields preserved) ---
+        const zones = fullData.http?.server_zones || {};
+        const dashboard = document.getElementById('dashboard');
+        dashboard.innerHTML = '';
+
+        for (const [zoneName, stats] of Object.entries(zones)) {
+            if (zoneName === 'monitoring_internal') continue;
+
+            const card = document.createElement('div');
+            card.className = 'card';
+
+            // Preservation of all requested data fields
+            const totalReq   = stats.requests?.total || 0;
+            const ok200      = stats.responses?.['200'] || 0;
+            const err404     = stats.responses?.['404'] || 0;
+            const processing = stats.requests?.processing || 0;
+            const receivedMB = ((stats.data?.received || 0) / 1024 / 1024).toFixed(3);
+            const sentMB     = ((stats.data?.sent || 0) / 1024 / 1024).toFixed(3);
+            const isHeavyIn  = (stats.data?.received || 0) > (stats.data?.sent || 0);
+
+            card.innerHTML = `
+                <h3>${zoneName.toUpperCase()}</h3>
+                <div class="stat">Total Requests: <span class="value">${totalReq}</span></div>
+                <div class="stat">Processing: <span class="value" style="color:${processing > 0 ? '#00d4ff' : '#888'}">${processing}</span></div>
+                <div class="stat">Success (200): <span class="value" style="color:#97cb4d">${ok200}</span></div>
+                <div class="stat">Not Found (404): <span class="value" style="color:#ff4d4d">${err404}</span></div>
+                <div class="stat">Inbound: <span class="value" style="color:#3498db">${receivedMB} MB</span></div>
+                <div class="stat">Outbound: <span class="value" style="color:#9b59b6">${sentMB} MB</span></div>
+                <div class="efficiency-bar">
+                    <div class="fill" style="width: ${isHeavyIn ? '100%' : '30%'}; background: ${isHeavyIn ? '#e74c3c' : '#97cb4d'}"></div>
+                </div>
+            `;
+            dashboard.appendChild(card);
+        }
+
+        const zoneCount = Object.keys(zones).filter(k => k !== 'monitoring_internal').length;
+        document.getElementById('v-zone').innerText = `${zoneCount} Active Zones`;
+
+    } catch (err) {
+        console.error('Dashboard Sync Error:', err);
+        // Show error UI only if dashboard is currently empty
+        if (!document.getElementById('dashboard').innerHTML) {
+            document.getElementById('dashboard').innerHTML = 
+                `<div style="color:#ff4d4d; padding:20px;">Sync Error: Check if /status/api/ is accessible.</div>`;
+        }
+    }
+}
+
+/**
+     * Control Panel Logic
+     */
+    function initControls() {
+        const toggle = document.getElementById('apiToggle');
+
+        // Sync UI with saved config
+        toggle.checked = config.enabled;
+
+        // Listen for Toggle clicks
+        toggle.addEventListener('change', (e) => {
+            config.enabled = e.target.checked;
+            saveAndRestart();
+        });
+
+        updateUI();
+        startMonitoring();
+    }
+
+    function adjustInterval(step) {
+        // Keep interval between 10s and 300s (5 mins)
+        config.interval = Math.min(Math.max(config.interval + step, 10), 300);
+        saveAndRestart();
+    }
+
+    function saveAndRestart() {
+        // Save to browser memory
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(config));
+        updateUI();
+        startMonitoring();
+    }
+
+    function updateUI() {
+        const label = document.getElementById('statusLabel');
+        const valDisplay = document.getElementById('intervalValue');
+        const progress = document.getElementById('progressBar');
+
+        label.innerText = config.enabled ? 'API: Enabled' : 'API: Paused';
+        valDisplay.innerText = config.interval + 's';
+
+        // Calculate progress bar width based on 300s max
+        const percent = (config.interval / 300) * 100;
+        progress.style.width = percent + '%';
+    }
+
+    function startMonitoring() {
+        // Clear any existing timer
+        if (updateTimer) clearInterval(updateTimer);
+
+        // Only start if enabled
+        if (config.enabled) {
+            updateStats(); // Run once immediately
+            updateTimer = setInterval(updateStats, config.interval * 1000);
+        }
+    }
+
+    // Start everything when page loads
+    initControls();
+</script>
+</body>
+</html>

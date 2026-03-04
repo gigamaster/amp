@@ -68,6 +68,9 @@ Follow these steps in order to build your first project.
 * **Download:**   
   Clone the repository or download a release ZIP and extract it to a folder e.g. `D:\amp\`
 
+[Amp releases](https://github.com/gigamaster/amp/releases)
+
+
 ```cmd
 git clone https://github.com/gigamaster/amp.git
 ```
@@ -76,7 +79,7 @@ git clone https://github.com/gigamaster/amp.git
   Open Docker Desktop and ensure the engine is running.
    
 * **Boot the Stack:**   
-  From amp folder (where docker-compose.yml lives), open a terminal and run:
+  From `amp` folder (where docker-compose.yml lives), open a terminal and run:
 
 ```bash
 docker compose up -d
@@ -85,13 +88,9 @@ docker compose up -d
 ### 2. First Run (One-Time Setup)
 
 1. Navigate to `config` folder
-2. **Right-click `AMP-MANAGER.bat` → UAC/elevation to run as administrator**
-3. Click **"Yes"** when Windows Security dialog appears, mkcert install your Certificate Authority (CA)
-4. Follow prompts to create your first domain e.g. `angie` → becomes `https://angie.local`
-
-
-> [!TIP]
-> Keep `ANP-MANAGER.bat` handy on your desktop, run `Create-shortcut.bat`  
+2. Run `AMP-MANAGER.bat` triggers a dialog UAC/elevation for administrator
+3. Install your **Certificate Authority** before any domain.
+4. Click **"Yes"** when Windows Security dialog appears, 
 
 
 AMP-MANAGER.bat runs as admin whenever you start a new project.  
@@ -100,15 +99,17 @@ Takes 10 seconds to get a green-lock HTTPS site ready for development.
 
 ### 3. The AMP-MANAGER Setup
 
-Run **`AMP-MANAGER.bat`** as Administrator. This tool is the "Architect" of your environment.
+**`AMP-MANAGER.bat`** allows you to manage your environment.
 
-* On the first run, it installs your **Certificate Authority**.  
-  This allows your browser to trust your local `.local` sites with green SSL locks.
-* **Add Your First Site:** Select **[N] New Domain** and type `angie`.
+* On the first run, you install your **Certificate Authority**   
+  this allows your browser to trust your local `.local` sites with green SSL locks.
+* Add the default site: Select **[N] New Domain** and type `angie`
+* Follow prompts to create your first domain e.g. `angie` → becomes `https://angie.local`  
+
 * Note that AMP-MANAGER automatically adds `.local`  
   - optionally scaffolds new domain folder
   - generates the domain SSL `.pem` files
-  - creates the server configuration.*
+  - creates the server configuration.
 
 * **Reload Angie:** For the server to see your new site configuration, restart the container:  
 
@@ -117,6 +118,10 @@ from AMP-MANAGER, or terminal:
 ```bash
 docker restart angie
 ```
+
+> [!TIP]
+> Keep `AMP-MANAGER.bat` handy on your desktop, run `Create-shortcut.bat` 
+
 
 ### 4. Test Your Site
 
