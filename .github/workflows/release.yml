@@ -9,10 +9,9 @@ permissions:
 
 jobs:
   release:
-    name: Create GitHub Release
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Extract Changelog Section
@@ -23,34 +22,27 @@ jobs:
           script: |
             const fs = require('fs');
             const changelog = fs.readFileSync('CHANGELOG.md', 'utf8');
-            const version = context.ref.replace('refs/tags/v', '');
+            const tag = context.ref.replace('refs/tags/', ''); // This gets 'v1.11.3'
             const lines = changelog.split(/\r?\n/);
             let output = [];
             let found = false;
 
             for (const line of lines) {
-              // Matches headers like ## [1.11.3], ## [v1.11.3], or ## 1.11.3
-              if (line.startsWith('##') && line.includes(version)) {
+              // Matches the EXACT tag including the 'v'
+              if (line.includes(tag)) {
                 found = true;
-                continue; // Skip the header line itself to keep notes clean
+                continue;
               }
-              // Stop if we hit the next version header
-              if (found && line.startsWith('##')) {
-                break;
-              }
-              if (found) {
-                output.push(line);
-              }
+              if (found && line.startsWith('##')) break;
+              if (found) output.push(line);
             }
-            return output.join('\n').trim() || "Notes for version " + version + " were not found in CHANGELOG.md.";
+            return output.join('\n').trim() || "Notes for " + tag + " not found.";
 
-      - name: Publish to GitHub Releases
+      - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.ref_name }}
           name: Release ${{ github.ref_name }}
           body: ${{ steps.changelog_reader.outputs.result }}
-          draft: false
-          prerelease: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
