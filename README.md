@@ -43,9 +43,8 @@ REM
 
 ## Features
 
-The juniors' reaction is common and understandable in 2026: they see React/TS/JS everywhere (frontend jobs, tutorials, hype), so when they read "MariaDB + PHP", their brain immediately translates it to "old-school LAMP stack, no modern JS, I can't use React". It sounds legit on the surface, but it's actually not a limitation at all, it's just a separation of concerns.
+The juniors' reaction is common and understandable: they see React/TS/JS everywhere (frontend jobs, tutorials, hype), so when they read "MariaDB + PHP", their brain immediately translates it to "old-school LAMP stack, no modern JS, I can't use React". It sounds legit on the surface, but it's actually not a limitation at all, it's just a separation of concerns.
 
-Angie, MariaDB and PHP are just the backend. You can build a React, TypeScript, frontend that talks to it via APIs (REST or GraphQL).
 
 
 | Stack    | Description        |
@@ -56,13 +55,15 @@ Angie, MariaDB and PHP are just the backend. You can build a React, TypeScript, 
 | **PHP** |  version 8.3.++, common extensions: mysqli, pdo_mysql, gd, zip, etc. |
 | **CA / SSL** |  **HTTPS** using **mkcert** for easy install a CA, and green lock all `.local` domains |
 
+
+
+Angie, MariaDB and PHP are just the backend. You can build a React, TypeScript, frontend that talks to it via APIs (REST or GraphQL).
+
 - Frontend: React/TS/Vite/whatever you're using  
 - Backend: PHP (Laravel/Symfony or even plain) and MariaDB  
 - They communicate with fetch/axios, exactly like Node/Express would
 
-This is super common: tons of real apps (WordPress APIs, Laravel + React dashboards, e-commerce sites) do exactly this.  
-
-You're not 'stuck' in PHP for the UI, you're just using it for server logic, auth, DB queries.  
+This is a popular stack: tons of real apps (WordPress APIs, Laravel + React dashboards, e-commerce sites) do exactly this. You're not 'stuck' in PHP for the UI, you're just using it for server logic, auth, DB queries.  
 
 > [!NOTE]
 > learning PHP backend teaches you fundamentals (routing, middleware, security, SQL) that transfer to any backend language later.
@@ -104,19 +105,19 @@ docker compose up -d
 
 ### 2. First Run (One-Time Setup)
 
-1. Navigate to `config` folder
+1. Navigate to `\amp\config\` folder
 2. Run `AMP-MANAGER.bat` triggers a dialog UAC/elevation for administrator
 3. Install your **Certificate Authority** before any domain.
 4. Click **"Yes"** when Windows Security dialog appears, 
 
 
-AMP-MANAGER.bat runs as admin whenever you start a new project.  
+**AMP-MANAGER.bat** runs as admin whenever you start a new project.  
 Takes 10 seconds to get a green-lock HTTPS site ready for development.
 
 
 ### 3. The AMP-MANAGER Setup
 
-**`AMP-MANAGER.bat`** allows you to manage your environment.
+**AMP-MANAGER.bat** allows you to manage your environment.
 
 * On the first run, you install your **Certificate Authority**   
   this allows your browser to trust your local `.local` sites with green SSL locks.

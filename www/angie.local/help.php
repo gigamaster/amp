@@ -21,7 +21,7 @@
     <aside>
         <ul>
             <li><a href="#getting-started" class="active">Getting Started</a></li>
-            <li><a href="#amp-server">AMP Server</a></li>
+            <li><a href="#amp-stack">AMP Stack</a></li>
             <li><a href="#ssl-certificates">SSL & Certificates</a></li>
             <li><a href="#setup-domains">Setup .local Domains</a></li>
             <li><a href="#database-settings">Database Settings</a></li>
@@ -41,11 +41,39 @@
                 <li>The container named <code>angie</code> is in status <strong>Up</strong></li>
                 <li>Run <code>docker compose ps</code> in your project folder to verify</li>
             </ul>
-            <p>Access this help page anytime via <code>https://angie.local/help.php</code></p>
+            <p>Access this help page anytime via <code>https://angie.local/help.php</code> or <code>/amp/docs/help.html</code></p>
+
+            <h3>Quick Start</h3>
+            <h4>Requirements</h4>
+            <ol>
+<li><strong>Download:</strong> Clone the repository or download the ZIP and extract it to a folder e.g. <code>D:\amp\</code></li>
+<li><strong>Launch Docker:</strong> Open Docker Desktop and ensure the engine is running.</li>
+<li><strong>Boot the Stack:</strong> Open a terminal in your project folder and run:</li>
+</ul>
+<p><code>docker compose up -d</code></p>
+
+<h4>The AMP-MANAGER Setup</h4>
+
+<p>Run <code>AMP-MANAGER.bat</code> triggers UAC elevation dialog to run as Administrator.<br>
+This tool allows you to manage your environment, docker, domains and SSL certificates.</p>
+
+<ul>
+<li><strong>Install CA:</strong> On the first run, ensure your <strong>Certificate Authority</strong> is properly installed.<br> This allows your browser to trust your local <code>.local</code> sites with green SSL locks.</li>
+<li><strong>Add Your First Site:</strong> Select <strong>[N] New Domain</strong> and type <code>angie</code></li>
+<li>AMP-MANAGER automatically adds <code>.local</code>, generates your SSL <code>.pem</code> files, and creates the server configuration.</li>
+</ul>
+
+<h4>Finalize & Browse</h4>
+<ul>
+<li><strong>Reload Angie:</strong> For the server to see your new site configuration, from AMP-MANAGER, or restart the container:</li>
+<li><strong>Visit the default angie.local:</strong> Open your browser and go to <strong><code>https://angie.local</code></strong></li>
+<li>This is your <strong>Control Center</strong> for documentation, health checks, and status monitoring.</li>
+</ul>
+
         </section>
 
-        <section id="amp-server" class="card">
-            <h2>AMP Server</h2>
+        <section id="amp-stack" class="card">
+            <h2>AMP Stack</h2>
             <p>Angie is a modern fork of Nginx with enhanced features, better performance tuning options, and active maintenance.</p>
             <p>In this AMP stack:</p>
             <ul>
@@ -53,8 +81,12 @@
                 <li>PHP-FPM processes dynamic content</li>
                 <li>All configuration files live on your host: <code>D:\amp\config\angie-sites\*.conf</code></li>
             </ul>
-            <p>More detailed setup information will be added here later.</p>
-            <p>https://en.angie.software/angie/docs/installation/external-modules/</p>
+            <p>More detailed setup information is available on the official websites:</p>
+            <p><a href="https://en.angie.software/" target="_blank">Angie, a free fork of nginx, a powerful and scalable web server ↗</a></p>
+            <p><a href="https://en.angie.software/angie/docs/installation/external-modules/" target="_blank">Angie srver external modules ↗</a></p>
+            <p><a href="https://mariadb.org/" target="_blank"> MariaDB Server: the innovative open source database ↗</a></p>
+            <p><a href="https://www.php.net/" target="_blank">PHP: the popular general-purpose scripting language  ↗</a></p>
+            <p><a href="https://github.com/FiloSottile/mkcert" target="_blank">Mkcert: zero-config tool to make locally trusted certificates ↗</a></p>
         </section>
 
         <section id="ssl-certificates" class="card">
@@ -73,18 +105,51 @@
             <h2>Setup .local Domains</h2>
             <p>To add a new local site:</p>
             <ol>
-                <li>Create your project folder inside <code>D:\amp\www\yourproject.local\</code></li>
-                <li>Add a config file <code>D:\amp\config\angie-sites\yourproject.local.conf</code></li>
-                <li>Use Option 1 in amp-manager.bat to:
+                <li>Create your project folder inside <code>D:\amp\www\project.local\</code></li>
+                <li>Run AMP-MANAGER to generate the server conf. file <code>D:\amp\config\angie-sites\project.local.conf</code></li>
+                <li>And create the required domain entry and <code>.pem</code> certificate:
                     <ul>
                         <li>Generate SSL certificate (mkcert)</li>
                         <li>Add entry to Windows hosts file (127.0.0.1 yourproject.local)</li>
                         <li>Reload Angie</li>
                     </ul>
                 </li>
-                <li>Ensure your .conf file has the correct <code>server_name yourproject.local;</code> and <code>root /www/yourproject.local/public;</code> (or similar)</li>
+                <li>Ensure your <code>.conf</code> file has the correct <code>server_name project.local;</code> and <code>root /www/project.local/public;</code></li>
             </ol>
-            <p>Tip: Use the wildcard DNS solution (Acrylic or similar) to avoid editing hosts file every time.</p>
+            <p>If you edit angie.local.conf avoid editing the <code>DASHBOARD & API</code> required for server <code>/status/</code></p>
+            <br>
+            <div id="code-lab" data-height="330"></div>
+
+<script type="module">
+import { createPlayground } from 'https://cdn.jsdelivr.net/npm/livecodes@0.13.0';
+
+createPlayground('#code-lab', {
+    params: {
+    language: 'markdown',
+    view: 'markdown',
+    mode: 'codeblock',
+    theme: 'dark',
+    markdown: '```nginx\n' +
+'    # DASHBOARD & API\n' +
+'    # Route calls to the API for the dashboard\n' +
+'    location /status/api/ {\n' +
+'        api /status/;\n' +
+'        allow all;\n' +
+'    }\n' +
+'\n' +
+'    # Serve the dashboard static files\n' +
+'    location /status/ {\n' +
+'        alias /usr/share/angie/html/status/;\n' +
+'        index index.html;\n' +
+'    }\n' +
+'\n' +
+'    # Protect error pages\n' +
+'}\n' +
+'```',
+
+    }
+});
+</script>
         </section>
 
         <section id="database-settings" class="card">
@@ -103,29 +168,10 @@
                 <li>Login as root</li>
                 <li>Create new database → assign privileges to ampuser if needed</li>
             </ol>
-            <p>Manage databases with root credentials or create dedicated users per project.</p>
-
-            <div id="code-lab" data-height="420"></div>
-
-<script type="module">
-  import { createPlayground } from 'https://cdn.jsdelivr.net/npm/livecodes@0.13.0';
-
-  createPlayground('#code-lab', {
-    params: {
-      language: 'php',
-      php: '<?php\n//db\n  $db_host="db";\n  $db_port=3306;\n  $root_user="root";\n  $root_pass="rootpass123";\n  $app_user="ampuser";\n  $app_pass="ampass456";\n  $app_db="ampdb";\n  $mariadb_version=null;\n  $mariadb_connect_msg="";\nfunction try_mariadb_version($host, $port, $user, $pass, $db="") {\n$mysqli=@new mysqli($host, $user, $pass, $db, $port);\nif ($mysqli && !$mysqli->connect_error) {\n$res=$mysqli->query("SELECT VERSION() AS v");\nif ($res) {\n$row=$res->fetch_assoc();\n$mysqli->close();\nreturn $row["v"] ?? "unknown";\n}\n$mysqli->close();\nreturn "connected but version query failed";\n}\nreturn false;\n}\n$ver=try_mariadb_version($db_host, $db_port, $app_user, $app_pass, $app_db);\nif ($ver !==false) {\n$mariadb_version=$ver;\n$mariadb_connect_msg="Connected as app user ($app_user) to $app_db";\n} else {\n$ver2=try_mariadb_version($db_host, $db_port, $root_user, $root_pass, $app_db);\nif ($ver2 !==false) {\n$mariadb_version=$ver2;\n$mariadb_connect_msg="Connected as root ($root_user) to $app_db";\n} else {\n$mariadb_version="Not reachable / credentials invalid";\n$mariadb_connect_msg="Connection failed with both app user and root";\n}\n?>}',
-      view: 'php', // Shows the output side-by-side
-      mode: 'lite',
-      mode: 'codeblock',
-      //console: 'open'
-      tools : "none",
-    },
-    config: {
-        activeEditor: 'php',
-        theme: 'dark'
-    }
-  });
-</script>
+            <div class="tip">
+                <p><strong>Tip</strong></p>
+                <p>Manage databases with root credentials and create dedicated users per project.</p>
+            </div>
         </section>
 
         <section id="troubleshooting" class="card">
@@ -137,6 +183,24 @@
                 <li><strong>Domain not resolving</strong>: Verify entry in <code>C:\Windows\System32\drivers\etc\hosts</code></li>
                 <li><strong>PHP errors</strong>: Check logs in <code>D:\amp\logs\php\</code></li>
             </ul>
+            <p>You can use the built-in PHP server for debugging, if you're having trouble with a specific script,<br>
+                e.g. a syntax error that is hard to find in Docker logs, just run this in the project folder:</p>
+            <p><code>php -S localhost:8000</code></p>
+            <ul>
+                <li>You get instant feedback: Errors are printed directly to the terminal window in real-time.</li>
+                <li>Isolation: It removes Docker, Angie, and SSL from the equation.<br>
+                    <i>If it works here but fails in the stack, the problem is in the Server Config, not the PHP Code.</i></li>
+            </ul>
+            <p>While great for a quick test, php -S has three major limitations:</p>
+            <ul>
+                <li>The built-in server ignores all your custom location blocks and rewrite rules.</li>
+                <li>Single-Threaded: It can only handle one request at a time.</li>
+                <li>No HTTPS: It runs on http://, so features requiring a Secure Context (like some modern JS APIs) will fail.</li>
+            </ul>
+            <div class="tip">
+                <p><strong>Tip</strong></p>
+                <p>Use php -S only if you need to see raw PHP errors instantly without checking the Docker logs.</p>
+            </div>
         </section>
 
         <section id="docker" class="card">
@@ -149,7 +213,10 @@
                 <li>Enter container: <code>docker compose exec angie sh</code> or <code>docker compose exec php sh</code></li>
                 <li>Reload Angie without restart: <code>docker compose exec angie angie -s reload</code></li>
             </ul>
-            <p>Container crash? Look for syntax errors in config files or missing mounts in <code>docker-compose.yml</code>.</p>
+            <div class="tip">
+                <p><strong>Tip</strong></p>
+                <p>Container crash? Look for syntax errors in config files or missing mounts in <code>docker-compose.yml</code>.</p>
+            </div>
         </section>
 
     </div>

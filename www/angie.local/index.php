@@ -228,7 +228,7 @@
             <h2>Welcome to AMP</h2>
             <p>Your local development stack is ready.</p>
             <br/>
-            <P><a href="student.php" target="_blank">Real-time server status</a></P>
+            <P><a href="/status/index.html" target="_blank">Real-time server status ↗</a></P>
         </section>
 
         <section id="domains" class="card">
@@ -336,9 +336,9 @@
             <h2>Credentials</h2>
             <p>This is a local development stack.</p>
             <ul style="margin:1rem 0; padding-left:1.5rem; line-height:1.6;">
-                <li>No passwords are stored or shown here</li>
+                <li>No passwords are stored by AMP-Manager.</li>
                 <li>Edit <code>docker-compose.yml</code> or <code>.env</code> for changes</li>
-                <li>SSL: self-signed via mkcert (trusted locally after install)</li>
+                <li>SSL: self-signed via mkcert (trusted locally after install CA)</li>
                 <li>All configuration files are on host: <code>[C:][D:]or[USB]\amp\config\...</code></li>
             </ul>
         </section>
@@ -361,7 +361,7 @@
 </div>
 
 <footer>
-    AMP – Angie • MariaDB • PHP • CA-SSL<br>
+    AMP • Angie • MariaDB • PHP • CA-SSL<br>
     <small>© <?= date('Y') ?> gigamaster • <a href="https://github.com/gigamaster/amp" target="_blank">GitHub - AMP</a></small>
 </footer>
 <script>

@@ -23,7 +23,7 @@
     <aside>
         <ul>
             <li><a href="#getting-started" class="active">Getting Started</a></li>
-            <li><a href="#amp-server">AMP Server</a></li>
+            <li><a href="#amp-stack">AMP Stack</a></li>
             <li><a href="#ssl-certificates">SSL & Certificates</a></li>
             <li><a href="#setup-domains">Setup .local Domains</a></li>
             <li><a href="#database-settings">Database Settings</a></li>
@@ -56,7 +56,7 @@
 
 <h4>The AMP-MANAGER Setup</h4>
 
-<p>Run <code>AMP-MANAGER.bat</code> as Administrator. This tool is the "Architect" of your environment.</p>
+<p>Run <code>AMP-MANAGER.bat</code> as Administrator. This tool allows you to manage your environment.</p>
 
 <ul dir="auto">
 <li><strong>Install CA:</strong> On the first run, it installs your <strong>Certificate Authority</strong>.<br> This allows your browser to trust your local <code>.local</code> sites with green SSL locks.</li>
@@ -73,8 +73,8 @@
 
         </section>
 
-        <section id="amp-server" class="card">
-            <h2>AMP Server</h2>
+        <section id="amp-stack" class="card">
+            <h2>AMP Stack</h2>
             <p>Angie is a modern fork of Nginx with enhanced features, better performance tuning options, and active maintenance.</p>
             <p>In this AMP stack:</p>
             <ul>
@@ -82,8 +82,12 @@
                 <li>PHP-FPM processes dynamic content</li>
                 <li>All configuration files live on your host: <code>D:\amp\config\angie-sites\*.conf</code></li>
             </ul>
-            <p>More detailed setup information will be added here later.</p>
-            <p>https://en.angie.software/angie/docs/installation/external-modules/</p>
+            <p>More detailed setup information is available on the official websites:</p>
+            <p><a href="https://en.angie.software/" target="_blank">Angie, a free fork of nginx, a powerful and scalable web server ↗</a></p>
+            <p><a href="https://en.angie.software/angie/docs/installation/external-modules/" target="_blank">Angie srver external modules ↗</a></p>
+            <p><a href="https://mariadb.org/" target="_blank"> MariaDB Server: the innovative open source database ↗</a></p>
+            <p><a href="https://www.php.net/" target="_blank">PHP: the popular general-purpose scripting language  ↗</a></p>
+            <p><a href="https://github.com/FiloSottile/mkcert" target="_blank">Mkcert: zero-config tool to make locally trusted certificates ↗</a></p>
         </section>
 
         <section id="ssl-certificates" class="card">
@@ -102,39 +106,20 @@
             <h2>Setup .local Domains</h2>
             <p>To add a new local site:</p>
             <ol>
-                <li>Create your project folder inside <code>D:\amp\www\yourproject.local\</code></li>
-                <li>Add a config file <code>D:\amp\config\angie-sites\yourproject.local.conf</code></li>
-                <li>Use Option 1 in amp-manager.bat to:
+                <li>Create your project folder inside <code>D:\amp\www\project.local\</code></li>
+                <li>Run AMP-MANAGER to generate the server conf. file <code>D:\amp\config\angie-sites\project.local.conf</code></li>
+                <li>And create the required domain entry and <code>.pem</code> certificate:
                     <ul>
                         <li>Generate SSL certificate (mkcert)</li>
                         <li>Add entry to Windows hosts file (127.0.0.1 yourproject.local)</li>
                         <li>Reload Angie</li>
                     </ul>
                 </li>
-                <li>Ensure your .conf file has the correct <code>server_name yourproject.local;</code> and <code>root /www/yourproject.local/public;</code> (or similar)</li>
+                <li>Ensure your <code>.conf</code> file has the correct <code>server_name project.local;</code> and <code>root /www/project.local/public;</code></li>
             </ol>
-            <p>Tip: Use the wildcard DNS solution (Acrylic or similar) to avoid editing hosts file every time.</p>
-        </section>
+            <p>If you edit angie.local.conf avoid editing the <code>DASHBOARD & API</code> required for server <code>/status/</code></p>
 
-        <section id="database-settings" class="card">
-            <h2>Database Settings</h2>
-            <p>Default credentials (change in production or via docker-compose):</p>
-            <ul>
-                <li>Host: <code>db</code> (MariaDB container name)</li>
-                <li>Root user: <code>root</code></li>
-                <li>Root password: set in docker-compose or .env</li>
-                <li>Application user: <code>ampuser</code></li>
-                <li>Default database: <code>ampdb</code></li>
-            </ul>
-            <p>To create a new database:</p>
-            <ol>
-                <li>Open phpMyAdmin (via Database Admin link) or any MySQL client</li>
-                <li>Login as root</li>
-                <li>Create new database → assign privileges to ampuser if needed</li>
-            </ol>
-            <p>Manage databases with root credentials or create dedicated users per project.</p>
-
-            <div id="code-lab" data-height="330"></div>
+                        <div id="code-lab" data-height="330"></div>
 
 <script type="module">
 import { createPlayground } from 'https://cdn.jsdelivr.net/npm/livecodes@0.13.0';
@@ -171,6 +156,25 @@ createPlayground('#code-lab', {
 </script>
         </section>
 
+        <section id="database-settings" class="card">
+            <h2>Database Settings</h2>
+            <p>Default credentials (change in production or via docker-compose):</p>
+            <ul>
+                <li>Host: <code>db</code> (MariaDB container name)</li>
+                <li>Root user: <code>root</code></li>
+                <li>Root password: set in docker-compose or .env</li>
+                <li>Application user: <code>ampuser</code></li>
+                <li>Default database: <code>ampdb</code></li>
+            </ul>
+            <p>To create a new database:</p>
+            <ol>
+                <li>Open phpMyAdmin (via Database Admin link) or any MySQL client</li>
+                <li>Login as root</li>
+                <li>Create new database → assign privileges to ampuser if needed</li>
+            </ol>
+            <p>Manage databases with root credentials or create dedicated users per project.</p>
+        </section>
+
         <section id="troubleshooting" class="card">
             <h2>Troubleshooting</h2>
             <ul>
@@ -180,6 +184,22 @@ createPlayground('#code-lab', {
                 <li><strong>Domain not resolving</strong>: Verify entry in <code>C:\Windows\System32\drivers\etc\hosts</code></li>
                 <li><strong>PHP errors</strong>: Check logs in <code>D:\amp\logs\php\</code></li>
             </ul>
+            <p>You can use the built-in PHP server for debugging if you're having trouble with a specific script,
+                e.g., a syntax error that is hard to find in Docker logs, just run this in the project folder:</p>
+            <p><code>php -S localhost:8000</code></p>
+            <ul>
+                <li>You get instant feedback: Errors are printed directly to the terminal window in real-time.</li>
+                <li>Isolation: It removes Docker, Angie, and SSL from the equation.<br>
+                    If it works here but fails in the stack, the problem is in the Server Config, not the PHP Code.</li>
+            </ul>
+            <p>While great for a quick test, php -S has three major limitations:</p>
+            <ul>
+                <li>The built-in server ignores all your custom location blocks and rewrite rules.</li>
+                <li>Single-Threaded: It can only handle one request at a time.</li>
+                <li>No HTTPS: It runs on http://, so features requiring a Secure Context (like some modern JS APIs) will fail</li>
+            </ul>
+            <p><strong>Tip</strong></p>
+            <p>Use php -S only if you need to see raw PHP errors instantly without checking the Docker logs.</p>
         </section>
 
         <section id="docker" class="card">

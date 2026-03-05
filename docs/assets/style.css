@@ -307,6 +307,7 @@ form table td {
     min-height:100px;
 }
 
+ol,
 ul {
     margin: 1rem 1.5rem;
 }
