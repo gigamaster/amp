@@ -44,7 +44,6 @@ a:hover, a:active {
     padding: 2rem;
     z-index: 1100;
 }
-
 .hero-logo {
     font-size: clamp(4rem, 12vw, 12rem);
     font-weight: 900;
@@ -62,12 +61,10 @@ a:hover, a:active {
     opacity:0.7; 
     animation: bounce 2s infinite;
 }
-
 @keyframes bounce {
     0%,100% { transform: translate(-50%, 0); }
     50%     { transform: translate(-50%, 12px); }
 }
-
 header {
     position: fixed;
     top: 0; left: 0; right: 0;
@@ -85,18 +82,15 @@ header {
 header.scrolled {
     background: hsla(227, 25%, 12%, 0.92);
 }
-
 .logo {
     font-size: 1.3rem;
     font-weight: 700;
     color: var(--link);
 }
-
 .header-buttons {
     display: flex;
     gap: 1rem;
 }
-
 .header-buttons a {
     color: var(--text);
     text-decoration: none;
@@ -105,18 +99,15 @@ header.scrolled {
     background: hsl(227 25% 20%);
     transition: all 0.2s;
 }
-
 .header-buttons a:hover {
     background: var(--primary);
     color: white;
 }
-
 .main {
     display: flex;
     flex: 1;
     margin-top: var(--header-height);
 }
-
 aside {
     width: 240px;
     background: hsl(227 25% 13%);
@@ -127,11 +118,10 @@ aside {
     overflow-y: auto;
     z-index: 900;
 }
-
-aside ul {
+:is(aside > ul) {
     list-style: none;
+    margin:0;
 }
-
 aside a {
     display: block;
     padding: 0.9rem 1rem;
@@ -141,19 +131,16 @@ aside a {
     margin-bottom: 0.4rem;
     transition: all 0.2s;
 }
-
 aside a:hover, aside a.active {
     background: hsl(227 25% 20%);
     color: var(--primary);
 }
-
 .content {
     margin-left: 240px;
     flex: 1;
     padding: 2.5rem 2rem 4rem;
     max-width: 1200px;
 }
-
 .card {
     background: var(--card-bg);
     border: 1px solid var(--card-border);
@@ -162,19 +149,16 @@ aside a:hover, aside a.active {
     margin-bottom: 2.5rem;
     box-shadow: 0 4px 16px rgba(0,0,0,0.35);
 }
-
 /* SCROLL fix */
 section[id] {
     line-height: 1.875;
     scroll-margin-top: calc(var(--header-height) + 2.5rem);
     scroll-snap-margin-top: calc(var(--header-height) + 2.5rem);
 }
-
 section[id] h2 {
     color: var(--primary);
     margin-bottom: 1.2rem;
 }
-
 h2, h3, h4 {
     color: var(--primary);
 }
@@ -184,38 +168,31 @@ h2, h3, h4 {
 h4, h5 {
     text-transform: uppercase;
 }
-
 table {
     width: 100%;
     border-collapse: collapse;
     margin: 1.2rem 0;
 }
-
 th, td {
     padding: 0.9rem;
     text-align: left;
     border-bottom: 1px solid var(--border);
 }
-
 th { color: var(--primary); font-weight: 600; }
-
 .success { color: var(--green); font-weight: bold; }
 .error  { color: var(--red);   font-weight: bold; }
-
 code {
     background:hsl(227 25% 10%);
     border: 1px solid var(--border);
     border-radius: 0.25rem;
     padding: 0.25rem 0.5rem;
 }
-
 .domains-list {
     display: flex;
     flex-wrap: wrap;
     gap: 0.8rem;
     margin-top: 1.2rem;
 }
-
 .domain-tag {
     background: hsl(227 25% 20%);
     padding: 0.6rem 1.2rem;
@@ -223,7 +200,6 @@ code {
     border: 1px solid var(--border);
     font-size: 0.95rem;
 }
-
 form input {
     width:100%; 
     padding:0.6rem; 
@@ -294,7 +270,6 @@ form button {
     border: solid white;
     border-width: 0 2px 2px 0;
 }
-
 form table td {
     vertical-align:top;
 }
@@ -306,12 +281,10 @@ form table td {
     background:hsl(227 25% 12%); 
     min-height:100px;
 }
-
 ol,
 ul {
     margin: 1rem 1.5rem;
 }
-
 ul.db-list {
     columns: 2;              /* Number of columns */
     column-gap: 1rem;
