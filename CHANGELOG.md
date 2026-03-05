@@ -2,7 +2,7 @@
 _AMP - Angie Server, MariadDB, PHP, SSL_  
 _http://github.com/gigamaster/amp_
 
-## [v] - 2026-02-26
+## [v1.11.3] - 2026-02-26
 
 ### Added
 
