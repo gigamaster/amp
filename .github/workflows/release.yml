@@ -17,19 +17,24 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Extract changelog section
+      - name: Extract changelog section for this tag
         id: changelog
         run: |
           TAG="${{ github.ref_name }}"
+          # Extract from ## [vX.Y.Z] to next ## or end
           awk -v tag="$TAG" '
             $0 ~ "^## \\["tag"\\]" {p=1; getline; next}
             p && $0 ~ /^## / {p=0}
             p {print}
-          ' Changelog.md > body.md
+          ' CHANGELOG.md > body.md || true  # don't fail if file missing
 
-          [ -s body.md ] || cp Changelog.md body.md
+          # Fallback to full changelog if section not found or empty
+          [ -s body.md ] || cp CHANGELOG.md body.md
 
-      - name: Create Release
+          # Trim leading/trailing empty lines
+          sed -i '/./,$!d' body.md
+
+      - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.ref_name }}
