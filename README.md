@@ -45,7 +45,11 @@ REM
 
 The juniors' reaction is common and understandable: they see React/TS/JS everywhere (frontend jobs, tutorials, hype), so when they read "MariaDB + PHP", their brain immediately translates it to "old-school LAMP stack, no modern JS, I can't use React". It sounds legit on the surface, but it's actually not a limitation at all, it's just a separation of concerns.
 
-
+<p align="center">
+  <picture>
+    <img src="favicon/4x4.png" alt="Overview" style="width:800px; height:24px">
+  </picture>
+</p>
 
 | Stack    | Description        |
 |----------|--------------------|
@@ -56,6 +60,11 @@ The juniors' reaction is common and understandable: they see React/TS/JS everywh
 | **CA / SSL** |  **HTTPS** using **mkcert** for easy install a CA, and green lock all `.local` domains |
 
 
+<p align="center">
+  <picture>
+    <img src="favicon/4x4.png" alt="Overview" style="width:800px; height:24px">
+  </picture>
+</p>
 
 Angie, MariaDB and PHP are just the backend. You can build a React, TypeScript, frontend that talks to it via APIs (REST or GraphQL).
 
@@ -63,12 +72,20 @@ Angie, MariaDB and PHP are just the backend. You can build a React, TypeScript, 
 - Backend: PHP (Laravel/Symfony or even plain) and MariaDB  
 - They communicate with fetch/axios, exactly like Node/Express would
 
-This is a popular stack: tons of real apps (WordPress APIs, Laravel + React dashboards, e-commerce sites) do exactly this. You're not 'stuck' in PHP for the UI, you're just using it for server logic, auth, DB queries.  
+This is a popular stack: tons of real apps (WordPress APIs, Laravel + React dashboards, e-commerce sites) do exactly this.  
+You're not 'stuck' in PHP for the UI, you're just using it for server logic, auth, DB queries.  
 
-> [!NOTE]
-> learning PHP backend teaches you fundamentals (routing, middleware, security, SQL) that transfer to any backend language later.
+> [!TIP]
+> Learning PHP backend teaches you fundamentals (routing, middleware, security, SQL) that transfer to any backend language later.  
+> So go ahead: write your React SPA, point it at PHP endpoints. Zero limitation, only more tools in your belt.
 
-So go ahead: write your React SPA, point it at PHP endpoints. Zero limitation, only more tools in your belt.
+
+<p align="center">
+  <picture>
+    <img src="favicon/4x4.png" alt="Overview" style="width:800px; height:32px">
+  </picture>
+</p>
+
 
 ## Quick Start
 
@@ -106,32 +123,46 @@ docker compose up -d
 ### 2. First Run (One-Time Setup)
 
 1. Navigate to `\amp\config\` folder
-2. Run `AMP-MANAGER.bat` triggers a dialog UAC/elevation for administrator
-3. Install your **Certificate Authority** before any domain.
-4. Click **"Yes"** when Windows Security dialog appears, 
+2. Run `AMP-MANAGER.bat` triggers a dialog to allow execution,  
+   and UAC/elevation to administrator is required to create your CA
+3. Install your **Certificate Authority** before any domain.  
+   Menu **[C]** option **[1]** Reset CA Wizard (red)
+4. Click **"Yes"** when Windows Security dialog appears. 
 
 
-**AMP-MANAGER.bat** runs as admin whenever you start a new project.  
-Takes 10 seconds to get a green-lock HTTPS site ready for development.
+> [!NOTE] 
+> **AMP-MANAGER.bat** runs as admin whenever you start a new project.  
+> Takes 10 seconds to get a green-lock HTTPS site ready for development.
+
 
 
 ### 3. The AMP-MANAGER Setup
 
 **AMP-MANAGER.bat** allows you to manage your environment.
 
-* On the first run, you install your **Certificate Authority**   
-  this allows your browser to trust your local `.local` sites with green SSL locks.
-* Add the default site: Select **[N] New Domain** and type `angie`
-* Follow prompts to create your first domain e.g. `angie` → becomes `https://angie.local`  
+<table>
+<tr>
+  <td><img src="favicon/amp-ca-ssl.jpg" width="634" hight="auto"></td>
+  <td>
+  <ul>
+  <li>On the first run, you install your <b>Certificate Authority (CA)</b><br>   
+  this allows your browser to trust your domain <code>.local</code> SSL</li>  
+  <li>Add the default site: Select <b>[N] New Domain</b> and type <code>angie</code></li>  
+  <li>Follow prompts to create your first domain e.g. <code>angie</code><br>
+    angie → becomes <code>https://angie.local</code><br>
+  the domain <code>angie.local</code>code> is your dashboard with server API status.</li>  
+  </ul>
 
-* Note that AMP-MANAGER automatically adds `.local`  
-  - optionally scaffolds new domain folder
-  - generates the domain SSL `.pem` files
-  - creates the server configuration.
+  <ul>Note that AMP-MANAGER automatically adds <code>.local</code>  
+  <li>optionally scaffolds new domain folder</li>  
+  <li>generates the domain SSL <code>.pem</code> files</li>  
+  <li>creates the server configuration.</li>  
+  </ul> 
+  </td>
+</tr>
+</table>
 
-* **Reload Angie:** For the server to see your new site configuration, restart the container:  
-
-from AMP-MANAGER, or terminal:
+**Reload Angie Server** from AMP-MANAGER to update the the server with your new site configuration, or restart the container from terminal:  
 
 ```bash
 docker restart angie
@@ -143,10 +174,10 @@ docker restart angie
 
 ### 4. Test Your Site
 
-On AMP-MANAGER, Select **[O] Open Browser** and visit the default **angie.local**
+On AMP-MANAGER, Select **[O] Open Browser** to visit the default **angie.local**   
 or open your browser and go to **`https://angie.local`**, check ✅ **Green lock!**
 
-The default domain is your **Control Center** for documentation, health checks, and status monitoring.
+The default domain is your **Dashboard** for documentation, health checks, and status monitoring.
 
 
 <p align="center">
@@ -409,6 +440,13 @@ PHP 8.3 official security support ended December 31, 2025. To switch versions:
 ---
 
 ## 🛠️ Troubleshooting
+
+### ⚠️ Windows 11 Console Compatibility (Important)
+
+**AMP-MANAGER.bat** is set to CP850, but encoded with Estonian ISO 8859-13 characters, and ANSI color sequences to render the UI.     
+Microsoft as changed its Terminal on Windows 11, the console host occasionally switch code pages or rendering modes the breaks    
+the UI. Try to close the Terminal, and reopen to reset its settings.  
+
 
 ### 🔸 Ports 80/443 already in use?
 
