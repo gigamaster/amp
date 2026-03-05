@@ -2,7 +2,7 @@
 _AMP - Angie Server, MariadDB, PHP, SSL_  
 _http://github.com/gigamaster/amp_
 
-## [1.11.3] – 2026-02-26
+## [1.11.3] - 2026-02-26
 
 ### Added
 
@@ -27,7 +27,7 @@ _http://github.com/gigamaster/amp_
 
 - AMP-MANAGER UI Menu navigation
 
-## [1.11.2] – 2026-01-15
+## [1.11.2] - 2026-01-15
 
 ### Added
 
@@ -53,7 +53,7 @@ _http://github.com/gigamaster/amp_
 - Zone domain for Angie stats
 - Custom 404/50x/maintenance
 
-## [1.11.1] – 2025-12-30
+## [1.11.1] - 2025-12-30
 
 ### Added
 
@@ -69,7 +69,7 @@ _http://github.com/gigamaster/amp_
 
 - Amp-Manager menu loop to refresh domains list
 
-## [1.10.3] – 2025-11-13
+## [1.10.3] - 2025-11-13
 
 ### Added
 
@@ -92,7 +92,7 @@ _http://github.com/gigamaster/amp_
 
 - CA/pem mismatch error
 
-## [1.10.0] – 2025-07-27
+## [1.10.0] - 2025-07-27
 
 ### Added
 
