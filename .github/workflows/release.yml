@@ -9,30 +9,48 @@ permissions:
 
 jobs:
   release:
+    name: Create GitHub Release
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout Code
         uses: actions/checkout@v4
 
       - name: Extract Changelog Section
         id: changelog_reader
         uses: actions/github-script@v7
         with:
+          result-encoding: string
           script: |
             const fs = require('fs');
             const changelog = fs.readFileSync('CHANGELOG.md', 'utf8');
             const version = context.ref.replace('refs/tags/v', '');
-            // This regex finds everything between your [1.11.3] header and the next ## header
-            const regex = new RegExp(`## \\[${version}\\][\\s\\S]*?(?=\\n## |$)`);
-            const match = changelog.match(regex);
-            return match ? match[0] : "Release notes not found in CHANGELOG.md";
-          result-encoding: string
+            const lines = changelog.split(/\r?\n/);
+            let output = [];
+            let found = false;
 
-      - name: Create GitHub Release
+            for (const line of lines) {
+              // Matches headers like ## [1.11.3], ## [v1.11.3], or ## 1.11.3
+              if (line.startsWith('##') && line.includes(version)) {
+                found = true;
+                continue; // Skip the header line itself to keep notes clean
+              }
+              // Stop if we hit the next version header
+              if (found && line.startsWith('##')) {
+                break;
+              }
+              if (found) {
+                output.push(line);
+              }
+            }
+            return output.join('\n').trim() || "Notes for version " + version + " were not found in CHANGELOG.md.";
+
+      - name: Publish to GitHub Releases
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.ref_name }}
           name: Release ${{ github.ref_name }}
           body: ${{ steps.changelog_reader.outputs.result }}
+          draft: false
+          prerelease: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
